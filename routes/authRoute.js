@@ -1,17 +1,22 @@
 const express = require("express");
+const { body, query } = require("express-validator");
+const { AuthController } = require("../controller");
 
 const router = express.Router();
 
-router.post("/signup", (req, res, next) => {
-  try {
-    console.log(req.body);
-    res.status(200).json({
-      status: 200,
-      messages: "User registered successfully!",
-    });
-  } catch (error) {
-    console.log(error);
-  }
-});
+const signupValidation = [
+  body("mobile").isNumeric().withMessage("Wrong mobile number"),
+  body("name").isString().withMessage("Name is invalid"),
+  body("email").isEmail().withMessage("Email is invalid"),
+  body("city").isString().withMessage("City is invalid"),
+];
+
+router.post("/signup", signupValidation, AuthController.signup);
+router.post("/login", [], AuthController.login);
+router.get(
+  "/isRegistered",
+  [query("mobile").isNumeric()],
+  AuthController.isRegistered
+);
 
 module.exports = router;
