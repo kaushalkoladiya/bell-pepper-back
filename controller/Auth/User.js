@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
-const User = require("../model/User");
+const { generateJWTToken } = require("../../helper");
+const { User } = require("../../model");
 
 exports.signup = async (req, res, next) => {
   try {
@@ -25,12 +26,19 @@ exports.signup = async (req, res, next) => {
 
     const user = await User.create(req.body);
     // generate token
+    const payload = {
+      name: user.name,
+      mobile: user.mobile,
+      email: user.email,
+    };
+    const token = generateJWTToken(payload);
 
     res.status(200).json({
       status: 200,
       messages: "User registered successfully!",
       data: {
         user,
+        token,
       },
     });
   } catch (error) {
@@ -52,34 +60,41 @@ exports.login = async (req, res, next) => {
     }
 
     // generate token
+    const payload = {
+      name: user.name,
+      mobile: user.mobile,
+      email: user.email,
+    };
+    const token = generateJWTToken(payload);
 
     return res.status(200).json({
       status: 200,
       messages: "User logged in successfully!",
+      data: { token },
     });
   } catch (error) {
     next(error);
   }
 };
 
-exports.isRegistered = async (req, res, next) => {
+exports.isMobileNoExists = async (req, res, next) => {
   try {
-    const isRegistered = await User.exists({ mobile: req?.query?.mobile });
-    if (!isRegistered) {
+    const isMobileNoExists = await User.exists({ mobile: req?.query?.mobile });
+    if (!isMobileNoExists) {
       return res.status(404).json({
         status: 404,
-        messages: "User is not registered",
+        messages: "Mobile no. is not registered",
         data: {
-          isRegistered: false,
+          isMobileNoExists: false,
         },
       });
     }
 
     return res.status(200).json({
       status: 200,
-      messages: "User is registered",
+      messages: "Mobile no. is registered",
       data: {
-        isRegistered: true,
+        isMobileNoExists: true,
       },
     });
   } catch (error) {

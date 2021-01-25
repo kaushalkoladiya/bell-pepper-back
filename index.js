@@ -1,11 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+// routes
+const { vendorAuthRoutes, userAuthRoutes } = require("./routes/auth");
+const { serviceRoutes } = require("./routes");
 
 require("dotenv").config();
-
-// routes
-const authRoute = require("./routes/authRoute");
 
 const app = express();
 const CONNECTION_URL = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.vrnuc.mongodb.net/${process.env.DB_NAME}?authSource=admin&replicaSet=atlas-11imru-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true`;
@@ -15,7 +15,9 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use("/api", authRoute);
+app.use("/api", userAuthRoutes);
+app.use("/api/vendor", vendorAuthRoutes);
+app.use("/api/service", serviceRoutes);
 
 app.use("*", (req, res, next) => {
   res.status(404).json({

@@ -1,0 +1,1 @@
+exports.serviceRoutes = require("./service");
