@@ -2,15 +2,15 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const driverSchema = new Schema({
+const serviceSchema = new Schema({
   vendorId: {
     ref: "Vendor",
     type: Schema.Types.ObjectId,
   },
-  vehicleNo: String,
-  name: String,
-  mobile: String,
+  price: String,
+  title: String,
+  description: String,
   image: String,
 });
 
-module.exports = mongoose.model("Driver", driverSchema);
+module.exports = mongoose.model("Service", serviceSchema);

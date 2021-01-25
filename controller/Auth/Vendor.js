@@ -35,7 +35,7 @@ exports.signup = async (req, res, next) => {
     const validatedData = validationResult(req);
     if (!validatedData.isEmpty()) {
       const err = new Error("Validation Fail");
-      err.status = 403;
+      err.status = 422;
       err.errors = validatedData.errors.map((error) => ({
         messages: error.msg,
         name: error.param,
@@ -47,7 +47,7 @@ exports.signup = async (req, res, next) => {
 
     if (isMobileExist) {
       const err = new Error("Mobile no. is already used!");
-      err.status = 403;
+      err.status = 422;
       throw err;
     }
 

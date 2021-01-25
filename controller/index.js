@@ -1,1 +1,1 @@
-exports.AuthController = require("./Auth");
+exports.ServiceController = require("./Service");
