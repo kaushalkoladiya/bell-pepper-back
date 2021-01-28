@@ -1,6 +1,38 @@
 const { validationResult } = require("express-validator");
 const Service = require("../model/Service");
 
+exports.index = async (req, res, next) => {
+  try {
+    const services = await Service.find().populate("vendorId");
+
+    return res.status(200).json({
+      status: 200,
+      message: "Success",
+      data: {
+        services,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.indexByVendorId = async (req, res, next) => {
+  try {
+    const services = await Service.find({ vendorId: req.params.vendorId });
+
+    return res.status(200).json({
+      status: 200,
+      message: "Success",
+      data: {
+        services,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.store = async (req, res, next) => {
   try {
     const validatedData = validationResult(req);
@@ -19,7 +51,7 @@ exports.store = async (req, res, next) => {
       err.status = 422;
       throw err;
     } else if (!req.file || !req.file.path) {
-      const err = new Error("Validation Error");
+      const err = new Error("Validation Error (Image Required)");
       err.status = 422;
       throw err;
     }
