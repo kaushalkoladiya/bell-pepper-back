@@ -75,6 +75,11 @@ const bookingSchema = new Schema(
       required: true,
       default: false,
     },
+    cancelledByWhom: {
+      type: String,
+      require: true,
+      default: null,
+    },
   },
   {
     timestamps: true,

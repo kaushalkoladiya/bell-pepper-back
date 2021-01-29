@@ -10,7 +10,7 @@ const userSchema = new Schema(
       default: null,
     },
     mobile: {
-      type: Number,
+      type: String,
       required: true,
       default: null,
       unique: true,
@@ -22,9 +22,8 @@ const userSchema = new Schema(
       unique: true,
     },
     gender: {
-      type: Boolean,
+      type: String,
       required: false,
-      default: null,
     },
     dob: {
       type: String,

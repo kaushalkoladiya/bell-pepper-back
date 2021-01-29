@@ -10,6 +10,7 @@ const {
   userRoutes,
   vendorRoutes,
   bookingRoutes,
+  staffRoutes,
 } = require("./routes");
 
 require("dotenv").config();
@@ -43,6 +44,7 @@ app.use("/api", userAuthRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/vendor", vendorAuthRoutes);
 app.use("/api/vendor", vendorRoutes);
+app.use("/api/staff", staffRoutes);
 app.use("/api/service", serviceRoutes);
 app.use("/api/booking", bookingRoutes);
 
