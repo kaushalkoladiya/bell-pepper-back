@@ -20,6 +20,18 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PATCH, PUT, DELETE"
+  );
+  if (req.method == "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/storage", express.static(path.join(__dirname, "storage")));
 
@@ -34,11 +46,17 @@ app.use("/api/vendor", vendorRoutes);
 app.use("/api/service", serviceRoutes);
 app.use("/api/booking", bookingRoutes);
 
-app.use("*", (req, res, next) => {
+app.use("/api/*", (req, res, next) => {
   res.status(404).json({
     status: 404,
     message: "404 not found!",
   });
+});
+
+app.get("/*", function (req, res) {
+  res
+    .status(200)
+    .sendFile(path.join(__dirname, "public", "build", "index.html"));
 });
 
 app.use((err, req, res, next) => {
