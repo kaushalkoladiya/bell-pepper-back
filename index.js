@@ -5,7 +5,12 @@ const path = require("path");
 const cors = require("cors");
 // routes
 const { vendorAuthRoutes, userAuthRoutes } = require("./routes/auth");
-const { serviceRoutes, userRoutes, vendorRoutes } = require("./routes");
+const {
+  serviceRoutes,
+  userRoutes,
+  vendorRoutes,
+  bookingRoutes,
+} = require("./routes");
 
 require("dotenv").config();
 
@@ -27,6 +32,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/vendor", vendorAuthRoutes);
 app.use("/api/vendor", vendorRoutes);
 app.use("/api/service", serviceRoutes);
+app.use("/api/booking", bookingRoutes);
 
 app.use("*", (req, res, next) => {
   res.status(404).json({

@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 const { generateJWTToken } = require("../../helper");
 const { User } = require("../../model");
+const { otp } = require("../../helper");
 
 exports.signup = async (req, res, next) => {
   try {
@@ -79,7 +80,7 @@ exports.login = async (req, res, next) => {
 
 exports.isMobileNoExists = async (req, res, next) => {
   try {
-    const isMobileNoExists = await User.exists({ mobile: req?.query?.mobile });
+    const isMobileNoExists = await User.exists({ mobile: req.query.mobile });
     if (!isMobileNoExists) {
       return res.status(404).json({
         status: 404,
@@ -90,11 +91,14 @@ exports.isMobileNoExists = async (req, res, next) => {
       });
     }
 
+    const otpCode = otp();
+
     return res.status(200).json({
       status: 200,
       messages: "Mobile no. is registered",
       data: {
         isMobileNoExists: true,
+        otp: otpCode,
       },
     });
   } catch (error) {

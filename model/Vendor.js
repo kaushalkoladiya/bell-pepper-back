@@ -7,11 +7,13 @@ const vendorSchema = new Schema(
     companyName: {
       type: String,
       required: true,
+      default: null,
     },
     mobile: {
       type: Number,
       required: true,
       unique: true,
+      default: null,
     },
     address: {
       city: String,
@@ -21,6 +23,7 @@ const vendorSchema = new Schema(
     staff: {
       type: Number,
       required: true,
+      default: null,
     },
     drivers: [
       {
