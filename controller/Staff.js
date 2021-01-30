@@ -1,5 +1,5 @@
 const { validationResult } = require("express-validator");
-const { Staff, Vendor } = require("../model");
+const { Staff, Vendor, Service, Booking } = require("../model");
 const faker = require("faker");
 
 exports.indexByVendor = async (req, res, next) => {
@@ -82,6 +82,31 @@ exports.faker = async (req, res, next) => {
       message: "Success",
       data: { staffs: staffArray },
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.destroy = async (req, res, next) => {
+  try {
+    const staff = await Staff.findById(req.params.id);
+
+    if (staff.isAvailable) {
+      const err = new Error("Staff is busy now, try later!");
+      err.status = 422;
+      throw err;
+    }
+
+    await staff.delete();
+
+    await Booking.deleteMany({ staffId: req.params.id });
+
+    if (!staff) {
+      return res.status(404).send({
+        message: "Can't Found Id",
+      });
+    }
+    res.send({ message: "staff deleted successfully!" });
   } catch (error) {
     next(error);
   }

@@ -4,5 +4,6 @@ const { VendorController } = require("../controller");
 const router = express.Router();
 
 router.get("/", VendorController.index);
+router.delete("/:id", VendorController.destroy);
 
 module.exports = router;

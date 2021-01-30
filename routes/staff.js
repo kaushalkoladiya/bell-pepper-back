@@ -14,6 +14,7 @@ const storeValidation = [
 
 router.get("/vendor/:vendorId", StaffController.indexByVendor);
 router.post("/", storeValidation, StaffController.store);
+router.delete("/:id", StaffController.destroy);
 router.get("/faker", StaffController.faker);
 
 module.exports = router;

@@ -32,4 +32,5 @@ router.post("/", storeValidation, BookingController.store);
 router.put("/assignStaff", assignValidation, BookingController.assignStaff);
 router.put("/removeStaff", BookingController.removeStaff);
 router.get("/faker", BookingController.faker);
+router.delete("/:id", BookingController.destroy);
 module.exports = router;

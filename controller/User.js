@@ -1,4 +1,4 @@
-const { User } = require("../model");
+const { User, Booking } = require("../model");
 const faker = require("faker");
 
 exports.index = async (req, res, ext) => {
@@ -41,6 +41,22 @@ exports.faker = async (req, res, next) => {
       message: "Success",
       data: { users: userArray },
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.destroy = async (req, res, next) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    await Booking.deleteMany({ userId: req.params.id });
+
+    if (!user) {
+      return res.status(404).send({
+        message: "Can't Found Id",
+      });
+    }
+    res.send({ message: "User deleted successfully!" });
   } catch (error) {
     next(error);
   }
