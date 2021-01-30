@@ -31,5 +31,5 @@ router.get("/user/:userId", BookingController.indexByUser);
 router.post("/", storeValidation, BookingController.store);
 router.put("/assignStaff", assignValidation, BookingController.assignStaff);
 router.put("/removeStaff", BookingController.removeStaff);
-
+router.get("/faker", BookingController.faker);
 module.exports = router;

@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
-const { Service, Booking, Vendor, Staff } = require("../model");
+const { Service, Booking, Vendor, Staff, User } = require("../model");
 const mongoose = require("mongoose");
+const faker = require("faker");
 
 exports.index = async (req, res, next) => {
   try {
@@ -223,3 +224,42 @@ const getFilteredBooking = async (filter = {}) =>
       model: "Service",
     },
   ]);
+
+exports.faker = async (req, res, next) => {
+  try {
+    const bookingArray = [];
+    const length = req.query.count || 5;
+
+    const serviceArray = await Service.find().select("_id vendorId");
+    const userArray = await User.find().select("_id");
+
+    for (let index = 0; index < length; index++) {
+      const len =
+        serviceArray.length < userArray.length
+          ? serviceArray.length
+          : userArray.length;
+
+      const i = Math.floor(Math.random() * len);
+
+      bookingArray.push({
+        vendorId: serviceArray[i].vendorId,
+        serviceId: serviceArray[i]._id,
+        userId: userArray[i]._id,
+        description: faker.random.words(10),
+        howManyHours: faker.random.number(5),
+        howManyProfessions: faker.random.number(5),
+        date: faker.date.past(),
+        time: faker.date.past(),
+      });
+    }
+    await Booking.insertMany(bookingArray);
+
+    res.status(200).json({
+      status: 200,
+      message: "Success",
+      data: { bookings: bookingArray },
+    });
+  } catch (error) {
+    next(error);
+  }
+};

@@ -11,6 +11,7 @@ const storeValidation = [
   body("description").notEmpty().withMessage("Invalid description"),
   body("price").isNumeric().withMessage("Price must be a number"),
 ];
+router.get("/faker", ServiceController.faker);
 
 router.get("/", ServiceController.index);
 

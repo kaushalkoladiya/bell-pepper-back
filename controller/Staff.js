@@ -1,6 +1,6 @@
 const { validationResult } = require("express-validator");
-const faker = require("faker");
 const { Staff, Vendor } = require("../model");
+const faker = require("faker");
 
 exports.indexByVendor = async (req, res, next) => {
   try {
