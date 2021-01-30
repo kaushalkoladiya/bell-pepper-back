@@ -10,7 +10,7 @@ exports.signup = async (req, res, next) => {
       const err = new Error("Validation Fail");
       err.status = 422;
       err.errors = validatedData.errors.map((error) => ({
-        messages: error.msg,
+        message: error.msg,
         name: error.param,
       }));
       throw err;
@@ -36,7 +36,7 @@ exports.signup = async (req, res, next) => {
 
     res.status(200).json({
       status: 200,
-      messages: "User registered successfully!",
+      message: "User registered successfully!",
       data: {
         user,
         token,
@@ -70,7 +70,7 @@ exports.login = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      messages: "User logged in successfully!",
+      message: "User logged in successfully!",
       data: { token },
     });
   } catch (error) {
@@ -84,7 +84,7 @@ exports.isMobileNoExists = async (req, res, next) => {
     if (!isMobileNoExists) {
       return res.status(404).json({
         status: 404,
-        messages: "Mobile no. is not registered",
+        message: "Mobile no. is not registered",
         data: {
           isMobileNoExists: false,
         },
@@ -95,7 +95,7 @@ exports.isMobileNoExists = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      messages: "Mobile no. is registered",
+      message: "Mobile no. is registered",
       data: {
         isMobileNoExists: true,
         otp: otpCode,

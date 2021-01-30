@@ -83,7 +83,7 @@ const bookingSchema = new Schema(
     doneOn: {
       type: String,
       default: null,
-      required: true,
+      required: false,
     },
   },
   {

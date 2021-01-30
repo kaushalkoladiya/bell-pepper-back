@@ -25,7 +25,7 @@ exports.store = async (req, res, next) => {
       const err = new Error("Validation Fail");
       err.status = 422;
       err.errors = validatedData.errors.map((error) => ({
-        messages: error.msg,
+        message: error.msg,
         name: error.param,
       }));
       throw err;
@@ -47,7 +47,7 @@ exports.store = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      messages: "Success",
+      message: "Success",
       data: { staff },
     });
   } catch (error) {

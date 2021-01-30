@@ -12,11 +12,10 @@ const {
   bookingRoutes,
   staffRoutes,
 } = require("./routes");
+const { Staff } = require("./model");
 
-// for db
 require("dotenv").config();
 
-// for db
 const app = express();
 const CONNECTION_URL = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.vrnuc.mongodb.net/${process.env.DB_NAME}?authSource=admin&replicaSet=atlas-11imru-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true`;
 const PORT = process.env.PORT || 5000;
@@ -38,12 +37,10 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/storage", express.static(path.join(__dirname, "storage")));
 
-// body parser
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// api calling
 app.use("/api", userAuthRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/vendor", vendorAuthRoutes);
@@ -59,13 +56,18 @@ app.use("/api/*", (req, res, next) => {
   });
 });
 
-app.get("/*", function (req, res) {});
+// app.get("/*", function (req, res) {
+//   res
+//     .status(200)
+//     .sendFile(path.join(__dirname, "public", "build", "index.html"));
+// });
 
 app.use((err, req, res, next) => {
-  return res.status(err.status || 500);
+  return res
+    .status(err.status || 500)
+    .json({ message: err.message || "Server Error", errors: err.errors });
 });
 
-// For Mongo DB connection
 mongoose.connect(
   CONNECTION_URL,
   {
@@ -76,8 +78,10 @@ mongoose.connect(
   },
   (err) => {
     if (!err) {
-      app.listen(PORT); // Server Listen
+      app.listen(PORT);
       console.log(`Server is running on ${PORT} and database is connected!`);
+    } else {
+      console.log(err);
     }
   }
 );
