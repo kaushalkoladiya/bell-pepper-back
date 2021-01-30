@@ -17,21 +17,19 @@ const storeValidation = [
     .withMessage("Invalid field HowManyProfessions"),
   body("date").notEmpty().withMessage("Invalid field Date"),
   body("time").notEmpty().withMessage("Invalid field Time"),
-  body("profession").notEmpty().withMessage("Invalid field Profession"),
 ];
 
-router.get("/", storeValidation, BookingController.index);
-router.get(
-  "/vendor/:vendorId",
-  storeValidation,
-  BookingController.indexByVendor
-);
-router.get(
-  "/service/:serviceId",
-  storeValidation,
-  BookingController.indexByService
-);
-router.get("/user/:userId", storeValidation, BookingController.indexByUser);
+const assignValidation = [
+  body("staffId").isAlphanumeric().withMessage("Invalid field Staff ID"),
+  body("bookingId").isAlphanumeric().withMessage("Invalid field Booking ID"),
+];
+
+router.get("/", BookingController.index);
+router.get("/vendor/:vendorId", BookingController.indexByVendor);
+router.get("/service/:serviceId", BookingController.indexByService);
+router.get("/user/:userId", BookingController.indexByUser);
 router.post("/", storeValidation, BookingController.store);
+router.put("/assignStaff", assignValidation, BookingController.assignStaff);
+router.put("/removeStaff", BookingController.removeStaff);
 
 module.exports = router;

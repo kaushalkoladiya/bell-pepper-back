@@ -13,7 +13,7 @@ const staffSchema = new Schema(
     email: { type: String, default: null },
     mobile: { type: String, default: null },
     image: { type: String, default: null },
-    isAvailable: { type: Boolean, default: false },
+    isAvailable: { type: Boolean, default: true },
   },
   {
     timestamps: true,

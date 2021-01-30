@@ -65,11 +65,6 @@ const bookingSchema = new Schema(
       default: null,
       // ref: "Payment",
     },
-    isDone: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
     isCancelled: {
       type: Boolean,
       required: true,
@@ -79,6 +74,16 @@ const bookingSchema = new Schema(
       type: String,
       require: true,
       default: null,
+    },
+    isDone: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    doneOn: {
+      type: String,
+      default: null,
+      required: true,
     },
   },
   {

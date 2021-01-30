@@ -5,10 +5,12 @@ const { VendorAuthController } = require("../../controller/Auth");
 const router = express.Router();
 
 const signupValidation = [
-  body("companyName").isString().withMessage("Company name is required"),
+  body("companyName").notEmpty().withMessage("Company name is required"),
+  body("email").isEmail().withMessage("Email is required"),
   body("mobile").isNumeric().withMessage("Mobile no. is invalid"),
-  body("address").isString().withMessage("Address is invalid"),
-  body("staff").isNumeric().withMessage("Staff is invalid"),
+  body("city").notEmpty().withMessage("City is invalid"),
+  body("street").notEmpty().withMessage("City is invalid"),
+  body("houseNumber").isNumeric().withMessage("City is invalid"),
 ];
 
 const loginValidation = [
@@ -23,6 +25,7 @@ const isMobileNoExistsValidation = [
 
 router.post("/signup", signupValidation, VendorAuthController.signup);
 router.post("/login", loginValidation, VendorAuthController.login);
+router.get("/faker", VendorAuthController.faker);
 // router.get(
 //   "/isMobileNoExists",
 //   isMobileNoExistsValidation,
