@@ -49,11 +49,11 @@ app.use("/api/*", (req, res, next) => {
     message: "404 not found!",
   });
 });
-// app.get("/*", function (req, res) {
-//   res
-//     .status(200)
-//     .sendFile(path.join(__dirname, "public", "build", "index.html"));
-// });
+app.get("/*", function (req, res) {
+  res
+    .status(200)
+    .sendFile(path.join(__dirname, "public", "build", "index.html"));
+});
 app.use((err, req, res, next) => {
   return res
     .status(err.status || 500)
