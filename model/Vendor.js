@@ -9,8 +9,14 @@ const vendorSchema = new Schema(
       required: true,
       default: null,
     },
+    email: {
+      type: String,
+      required: true,
+      default: null,
+      unique: true,
+    },
     mobile: {
-      type: Number,
+      type: String,
       required: true,
       unique: true,
       default: null,
@@ -20,15 +26,10 @@ const vendorSchema = new Schema(
       street: String,
       houseNumber: String,
     },
-    staff: {
-      type: Number,
-      required: true,
-      default: null,
-    },
-    drivers: [
+    staff: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Driver",
+        ref: "Staff",
         required: false,
       },
     ],
