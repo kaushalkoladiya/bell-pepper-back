@@ -23,7 +23,7 @@ exports.login = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      messages: "User logged in successfully!",
+      message: "User logged in successfully!",
       data: { token },
     });
   } catch (error) {
@@ -38,7 +38,7 @@ exports.signup = async (req, res, next) => {
       const err = new Error("Validation Fail");
       err.status = 422;
       err.errors = validatedData.errors.map((error) => ({
-        messages: error.msg,
+        message: error.msg,
         name: error.param,
       }));
       throw err;

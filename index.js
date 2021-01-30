@@ -13,6 +13,7 @@ const {
   staffRoutes,
 } = require("./routes");
 require("dotenv").config();
+
 const app = express();
 const CONNECTION_URL = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.vrnuc.mongodb.net/${process.env.DB_NAME}?authSource=admin&replicaSet=atlas-11imru-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true`;
 const PORT = process.env.PORT || 5000;
@@ -30,9 +31,11 @@ app.use((req, res, next) => {
 });
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/storage", express.static(path.join(__dirname, "storage")));
+
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
 app.use("/api", userAuthRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/vendor", vendorAuthRoutes);
@@ -68,6 +71,8 @@ mongoose.connect(
     if (!err) {
       app.listen(PORT);
       console.log(`Server is running on ${PORT} and database is connected!`);
+    } else {
+      console.log(err);
     }
   }
 );

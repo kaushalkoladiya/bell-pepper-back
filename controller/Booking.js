@@ -78,7 +78,7 @@ exports.store = async (req, res, next) => {
       const err = new Error("Validation Fail");
       err.status = 422;
       err.errors = validatedData.errors.map((error) => ({
-        messages: error.msg,
+        message: error.msg,
         name: error.param,
       }));
       throw err;
@@ -107,7 +107,7 @@ exports.store = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      messages: "Success",
+      message: "Success",
       data: { booking },
     });
   } catch (error) {
@@ -122,7 +122,7 @@ exports.assignStaff = async (req, res, next) => {
       const err = new Error("Validation Fail");
       err.status = 422;
       err.errors = validatedData.errors.map((error) => ({
-        messages: error.msg,
+        message: error.msg,
         name: error.param,
       }));
       throw err;
@@ -157,8 +157,13 @@ exports.assignStaff = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      messages: "Staff assign successfully.",
-      data: {},
+      message: "Staff assign successfully.",
+      data: {
+        booking: {
+          ...booking._doc,
+          staffId: staff,
+        },
+      },
     });
   } catch (error) {
     next(error);
@@ -172,7 +177,7 @@ exports.removeStaff = async (req, res, next) => {
       const err = new Error("Validation Fail");
       err.status = 422;
       err.errors = validatedData.errors.map((error) => ({
-        messages: error.msg,
+        message: error.msg,
         name: error.param,
       }));
       throw err;
@@ -201,7 +206,7 @@ exports.removeStaff = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      messages: "Staff remove successfully.",
+      message: "Staff remove successfully.",
       data: {},
     });
   } catch (error) {
@@ -222,6 +227,10 @@ const getFilteredBooking = async (filter = {}) =>
     {
       path: "serviceId",
       model: "Service",
+    },
+    {
+      path: "profession",
+      model: "Staff",
     },
   ]);
 
