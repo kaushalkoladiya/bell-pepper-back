@@ -1,24 +1,23 @@
-// import mongo db
 const mongoose = require("mongoose");
 
-// for communitcation with database
 const Schema = mongoose.Schema;
 
-const driverSchema = new Schema(
+const staffSchema = new Schema(
   {
     vendorId: {
       ref: "Vendor",
       type: Schema.Types.ObjectId,
     },
-    vehicleNo: { type: String, default: null },
     name: { type: String, default: null },
+    about: { type: String, default: null },
+    email: { type: String, default: null },
     mobile: { type: String, default: null },
     image: { type: String, default: null },
+    isAvailable: { type: Boolean, default: false },
   },
   {
     timestamps: true,
   }
 );
 
-// export model
-module.exports = mongoose.model("Driver", driverSchema);
+module.exports = mongoose.model("Staff", staffSchema);

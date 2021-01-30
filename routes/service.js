@@ -1,5 +1,5 @@
 const express = require("express");
-const { body, query } = require("express-validator");
+const { body } = require("express-validator");
 const { ServiceController } = require("../controller");
 const multer = require("../helper/multer");
 
@@ -11,6 +11,10 @@ const storeValidation = [
   body("description").notEmpty().withMessage("Invalid description"),
   body("price").isNumeric().withMessage("Price must be a number"),
 ];
+
+router.get("/", ServiceController.index);
+
+router.get("/:vendorId", ServiceController.indexByVendorId);
 
 router.post(
   "/",

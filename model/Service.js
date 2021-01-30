@@ -2,15 +2,20 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const serviceSchema = new Schema({
-  vendorId: {
-    ref: "Vendor",
-    type: Schema.Types.ObjectId,
+const serviceSchema = new Schema(
+  {
+    vendorId: {
+      ref: "Vendor",
+      type: Schema.Types.ObjectId,
+    },
+    price: { type: String, default: null },
+    title: { type: String, default: null },
+    description: { type: String, default: null },
+    image: { type: String, default: null },
   },
-  price: String,
-  title: String,
-  description: String,
-  image: String,
-});
+  {
+    timestamps: true,
+  }
+);
 
 module.exports = mongoose.model("Service", serviceSchema);
