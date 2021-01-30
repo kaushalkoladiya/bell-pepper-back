@@ -1,6 +1,7 @@
-const { validationResult } = require("express-validator");
-const Service = require("../model/Service");
+const { validationResult } = require("express-validator"); // import
+const Service = require("../model/Service"); // import
 
+// for create new record in db
 exports.store = async (req, res, next) => {
   try {
     const validatedData = validationResult(req);
