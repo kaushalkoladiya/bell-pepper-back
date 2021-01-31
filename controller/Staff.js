@@ -2,6 +2,22 @@ const { validationResult } = require("express-validator");
 const { Staff, Vendor, Service, Booking } = require("../model");
 const faker = require("faker");
 
+exports.index = async (req, res, next) => {
+  try {
+    const staffs = await Staff.find({ deletedAt: null });
+
+    return res.status(200).json({
+      status: 200,
+      message: "Success",
+      data: {
+        staffs,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.indexByVendor = async (req, res, next) => {
   try {
     const staffs = await Staff.find({ vendorId: req.params.vendorId });
@@ -91,22 +107,28 @@ exports.destroy = async (req, res, next) => {
   try {
     const staff = await Staff.findById(req.params.id);
 
-    if (staff.isAvailable) {
+    if (!staff.isAvailable) {
       const err = new Error("Staff is busy now, try later!");
       err.status = 422;
       throw err;
     }
 
-    await staff.delete();
+    staff.deletedAt = new Date().toISOString();
 
-    await Booking.deleteMany({ staffId: req.params.id });
+    await staff.save();
+
+    await Booking.updateMany(
+      { staffId: req.params.id },
+      { deletedAt: new Date().toISOString() }
+    );
 
     if (!staff) {
-      return res.status(404).send({
-        message: "Can't Found Id",
-      });
+      const err = new Error("Staff not found");
+      err.status = 404;
+      throw err;
     }
-    res.send({ message: "staff deleted successfully!" });
+
+    res.send({ message: "staff deleted successfully!", status: 200 });
   } catch (error) {
     next(error);
   }

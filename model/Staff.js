@@ -14,6 +14,7 @@ const staffSchema = new Schema(
     mobile: { type: String, default: null },
     image: { type: String, default: null },
     isAvailable: { type: Boolean, default: true },
+    deletedAt: { type: Date, default: null },
   },
   {
     timestamps: true,

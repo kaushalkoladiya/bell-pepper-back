@@ -12,6 +12,7 @@ const storeValidation = [
   body("mobile").isNumeric().withMessage("Invalid field Phone No."),
 ];
 
+router.get("/", StaffController.index);
 router.get("/vendor/:vendorId", StaffController.indexByVendor);
 router.post("/", storeValidation, StaffController.store);
 router.delete("/:id", StaffController.destroy);

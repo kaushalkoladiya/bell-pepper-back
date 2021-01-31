@@ -29,7 +29,7 @@ app.use((req, res, next) => {
   }
   next();
 });
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public", "build")));
 app.use("/storage", express.static(path.join(__dirname, "storage")));
 
 app.use(express.json());
