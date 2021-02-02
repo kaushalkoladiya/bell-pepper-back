@@ -32,3 +32,32 @@ exports.destroy = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.faker = async (req, res, next) => {
+  try {
+    const vendorArray = [];
+    const length = req.query.count || 5;
+    for (let index = 0; index < length; index++) {
+      vendorArray.push({
+        companyName: faker.company.companyName(),
+        email: faker.internet.email(),
+        mobile: faker.phone.phoneNumber(),
+        address: {
+          city: faker.address.city(),
+          street: faker.address.streetName(),
+          houseNumber: faker.random.number(99),
+        },
+      });
+    }
+
+    await Vendor.insertMany(vendorArray);
+
+    res.status(200).json({
+      status: 200,
+      message: "Success",
+      data: { vendors: vendorArray },
+    });
+  } catch (error) {
+    next(error);
+  }
+};

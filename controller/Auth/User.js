@@ -81,17 +81,19 @@ exports.login = async (req, res, next) => {
 exports.isMobileNoExists = async (req, res, next) => {
   try {
     const isMobileNoExists = await User.exists({ mobile: req.query.mobile });
+
+    const otpCode = otp();
+
     if (!isMobileNoExists) {
-      return res.status(404).json({
-        status: 404,
+      return res.status(200).json({
+        status: 200,
         message: "Mobile no. is not registered",
         data: {
           isMobileNoExists: false,
+          otp: otpCode,
         },
       });
     }
-
-    const otpCode = otp();
 
     return res.status(200).json({
       status: 200,

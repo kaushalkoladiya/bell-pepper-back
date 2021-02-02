@@ -4,7 +4,11 @@ const mongoose = require("mongoose");
 const path = require("path");
 const cors = require("cors");
 // routes
-const { vendorAuthRoutes, userAuthRoutes } = require("./routes/auth");
+const {
+  vendorAuthRoutes,
+  userAuthRoutes,
+  adminAuthRoutes,
+} = require("./routes/auth");
 const {
   serviceRoutes,
   userRoutes,
@@ -42,6 +46,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use("/api", userAuthRoutes);
+app.use("/api/admin", adminAuthRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/vendor", vendorAuthRoutes);
 app.use("/api/vendor", vendorRoutes);
@@ -62,7 +67,11 @@ app.get("/*", function (req, res) {
 app.use((err, req, res, next) => {
   return res
     .status(err.status || 500)
-    .json({ message: err.message || "Server Error", errors: err.errors });
+    .json({
+      message: err.message || "Server Error",
+      errors: err.errors,
+      status: err.status || 500,
+    });
 });
 mongoose.connect(
   CONNECTION_URL,

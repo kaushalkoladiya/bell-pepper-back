@@ -17,6 +17,11 @@ const loginValidation = [
   body("mobile").isNumeric().withMessage("Wrong mobile number"),
 ];
 
+const loginEmailValidation = [
+  body("email").isEmail().withMessage("Invalid Email!"),
+  body("password").notEmpty().withMessage("Password cannot be empty!"),
+];
+
 const isMobileNoExistsValidation = [
   query("mobile")
     .isNumeric()
@@ -25,7 +30,11 @@ const isMobileNoExistsValidation = [
 
 router.post("/signup", signupValidation, VendorAuthController.signup);
 router.post("/login", loginValidation, VendorAuthController.login);
-router.get("/faker", VendorAuthController.faker);
+router.post(
+  "/loginWithEmail",
+  loginEmailValidation,
+  VendorAuthController.loginWithEmail
+);
 // router.get(
 //   "/isMobileNoExists",
 //   isMobileNoExistsValidation,
