@@ -15,6 +15,7 @@ const {
   vendorRoutes,
   bookingRoutes,
   staffRoutes,
+  adminRoutes,
 } = require("./routes");
 require("dotenv").config();
 
@@ -47,6 +48,7 @@ app.use(bodyParser.json());
 
 app.use("/api", userAuthRoutes);
 app.use("/api/admin", adminAuthRoutes);
+app.use("/api/admin", adminRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/vendor", vendorAuthRoutes);
 app.use("/api/vendor", vendorRoutes);
@@ -65,13 +67,11 @@ app.get("/*", function (req, res) {
     .sendFile(path.join(__dirname, "public", "build", "index.html"));
 });
 app.use((err, req, res, next) => {
-  return res
-    .status(err.status || 500)
-    .json({
-      message: err.message || "Server Error",
-      errors: err.errors,
-      status: err.status || 500,
-    });
+  return res.status(err.status || 500).json({
+    message: err.message || "Server Error",
+    errors: err.errors,
+    status: err.status || 500,
+  });
 });
 mongoose.connect(
   CONNECTION_URL,

@@ -1,0 +1,1 @@
+exports.AdminMiddleware = require("./Admin");
