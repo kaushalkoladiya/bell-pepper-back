@@ -143,7 +143,7 @@ exports.assignStaff = async (req, res, next) => {
     }
 
     // inverse this condition to not (if not).
-    if (!staff.isAvailable) {
+    if (staff.isAvailable) {
       const err = new Error("Staff not available!");
       err.status = 422;
       throw err;
