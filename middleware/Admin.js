@@ -16,7 +16,6 @@ module.exports = async (req, res, next) => {
     if (!decodedToken) {
       throw new Error("Unauthorized");
     }
-    console.log(decodedToken);
     req.userType = "ROOT_USER";
     req.userId = decodedToken._id;
     return next();

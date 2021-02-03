@@ -74,6 +74,68 @@ exports.store = async (req, res, next) => {
   }
 };
 
+exports.update = async (req, res, next) => {
+  try {
+    const validatedData = validationResult(req);
+    if (!validatedData.isEmpty()) {
+      const err = new Error("Validation Fail");
+      err.status = 422;
+      err.errors = validatedData.errors.map((error) => ({
+        message: error.msg,
+        name: error.param,
+      }));
+      throw err;
+    }
+
+    const updatedService = {
+      price: req.body.price,
+      title: req.body.title,
+      description: req.body.description,
+    };
+
+    if (req.file) {
+      if (req.isImageTypeInvalid) {
+        const err = new Error("Invalid image type");
+        err.status = 422;
+        throw err;
+      } else if (!req.file || !req.file.path) {
+        const err = new Error("Validation Error (Image Required)");
+        err.status = 422;
+        throw err;
+      }
+      updatedService.image = req.file.path;
+    }
+
+    const service = await Service.findByIdAndUpdate(
+      req.params.id,
+      updatedService,
+      { new: true }
+    );
+
+    return res.status(200).json({
+      status: 200,
+      message: "Success",
+      data: { service },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.destroy = async (req, res, next) => {
+  try {
+    const service = await Service.findByIdAndDelete(req.params.id);
+
+    return res.status(200).json({
+      status: 200,
+      message: "Success",
+      data: { service },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.faker = async (req, res, next) => {
   try {
     const serviceArray = [];
