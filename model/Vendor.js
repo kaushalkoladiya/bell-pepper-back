@@ -4,6 +4,12 @@ const Schema = mongoose.Schema;
 
 const vendorSchema = new Schema(
   {
+    serviceId: {
+      type: mongoose.Schema.ObjectId,
+      ref: "Service",
+      required: true,
+      default: null,
+    },
     companyName: {
       type: String,
       required: true,

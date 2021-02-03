@@ -142,8 +142,8 @@ exports.assignStaff = async (req, res, next) => {
       throw err;
     }
 
-    // inverse this condition to not (if not).
-    if (staff.isAvailable) {
+    // do this condition to not (if not).
+    if (!staff.isAvailable) {
       const err = new Error("Staff is not available!");
       err.status = 422;
       throw err;
@@ -239,7 +239,7 @@ exports.faker = async (req, res, next) => {
     const bookingArray = [];
     const length = req.query.count || 5;
 
-    const serviceArray = await Service.find().select("_id vendorId");
+    const serviceArray = await Service.find().select("_id");
     const userArray = await User.find().select("_id");
 
     for (let index = 0; index < length; index++) {
@@ -251,7 +251,6 @@ exports.faker = async (req, res, next) => {
       const i = Math.floor(Math.random() * len);
 
       bookingArray.push({
-        vendorId: serviceArray[i].vendorId,
         serviceId: serviceArray[i]._id,
         userId: userArray[i]._id,
         description: faker.random.words(10),
@@ -276,13 +275,14 @@ exports.faker = async (req, res, next) => {
 exports.destroy = async (req, res, next) => {
   try {
     const booking = await Booking.findByIdAndDelete(req.params.id);
-
     if (!booking) {
       return res.status(404).send({
         message: "Can't Found Id",
       });
     }
-    res.send({ message: "Booking deleted successfully!" });
+    res
+      .status(200)
+      .send({ status: 200, message: "Booking deleted successfully!" });
   } catch (error) {
     next(error);
   }

@@ -54,6 +54,7 @@ exports.signup = async (req, res, next) => {
     }
 
     const vendor = await Vendor.create({
+      service: req.body.serviceId,
       companyName: req.body.companyName,
       email: req.body.email,
       mobile: req.body.mobile,

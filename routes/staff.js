@@ -13,7 +13,7 @@ const storeValidation = [
 ];
 
 router.get("/", StaffController.index);
-router.get("/vendor/:vendorId", StaffController.indexByVendor);
+router.get("/service/:serviceId", StaffController.assignStaff);
 router.post("/", storeValidation, StaffController.store);
 router.delete("/:id", StaffController.destroy);
 router.get("/faker", StaffController.faker);

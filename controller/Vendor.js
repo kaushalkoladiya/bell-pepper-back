@@ -1,8 +1,11 @@
 const { Service, Booking, Vendor, Staff } = require("../model");
+const faker = require("faker");
 
 exports.index = async (req, res, ext) => {
   try {
-    const vendors = await Vendor.find();
+    const vendors = await Vendor.find({ deletedAt: null }).sort({
+      createdAt: -1,
+    });
     return res.status(200).json({
       status: 200,
       message: "Success",
@@ -19,7 +22,6 @@ exports.destroy = async (req, res, next) => {
   try {
     const vendor = await Vendor.findByIdAndDelete(req.params.id);
     await Staff.deleteMany({ vendorId: req.params.id });
-    await Service.deleteMany({ vendorId: req.params.id });
     await Booking.deleteMany({ vendorId: req.params.id });
 
     if (!vendor) {
@@ -27,7 +29,9 @@ exports.destroy = async (req, res, next) => {
         message: "Can't Found Id",
       });
     }
-    res.send({ message: "vendor deleted successfully!" });
+    res
+      .status(200)
+      .send({ status: 200, message: "vendor deleted successfully!" });
   } catch (error) {
     next(error);
   }
@@ -35,10 +39,15 @@ exports.destroy = async (req, res, next) => {
 
 exports.faker = async (req, res, next) => {
   try {
+    const serviceArray = await Service.find().select("_id");
+
     const vendorArray = [];
     const length = req.query.count || 5;
     for (let index = 0; index < length; index++) {
+      const i = Math.floor(Math.random() * serviceArray.length);
+
       vendorArray.push({
+        serviceId: serviceArray[i]._id,
         companyName: faker.company.companyName(),
         email: faker.internet.email(),
         mobile: faker.phone.phoneNumber(),

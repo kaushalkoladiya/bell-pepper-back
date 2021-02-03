@@ -5,6 +5,7 @@ const { VendorAuthController } = require("../../controller/Auth");
 const router = express.Router();
 
 const signupValidation = [
+  body("serviceId").isAlphanumeric().withMessage("Service Id is required"),
   body("companyName").notEmpty().withMessage("Company name is required"),
   body("email").isEmail().withMessage("Email is required"),
   body("mobile").isNumeric().withMessage("Mobile no. is invalid"),

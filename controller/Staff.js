@@ -133,3 +133,23 @@ exports.destroy = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.assignStaff = async (req, res, next) => {
+  try {
+    const vendors = await Vendor.find({
+      serviceId: req.params.serviceId,
+    }).select("_id");
+
+    const vendorIds = vendors.map((item) => item._id);
+
+    const staffs = await Staff.find({ vendorId: { $in: vendorIds } });
+
+    res.status(200).json({
+      status: 200,
+      message: "Success",
+      data: { staffs },
+    });
+  } catch (error) {
+    next(error);
+  }
+};

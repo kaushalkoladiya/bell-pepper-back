@@ -32,7 +32,7 @@ const bookingSchema = new Schema(
     frequency: {
       type: String,
       required: true,
-      default: "one day",
+      default: "one time",
     },
     howManyHours: {
       type: Number,
