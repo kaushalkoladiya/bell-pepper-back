@@ -1,3 +1,1 @@
-const faker = require("faker");
-
-module.exports = () => faker.random.number(9999);
+module.exports = () => Math.floor(1000 + Math.random() * 9999);

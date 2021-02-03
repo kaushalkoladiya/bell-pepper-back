@@ -23,7 +23,7 @@ const isMobileNoExistsValidation = [
 
 router.post("/signup", signupValidation, UserAuthController.signup);
 router.post("/login", loginValidation, UserAuthController.login);
-router.get(
+router.post(
   "/isMobileNoExists",
   isMobileNoExistsValidation,
   UserAuthController.isMobileNoExists

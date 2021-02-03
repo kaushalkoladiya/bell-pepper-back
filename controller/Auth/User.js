@@ -80,7 +80,7 @@ exports.login = async (req, res, next) => {
 
 exports.isMobileNoExists = async (req, res, next) => {
   try {
-    const isMobileNoExists = await User.exists({ mobile: req.query.mobile });
+    const isMobileNoExists = await User.exists({ mobile: req.body.mobile });
 
     const otpCode = otp();
 
