@@ -16,6 +16,7 @@ const {
   bookingRoutes,
   staffRoutes,
   adminRoutes,
+  dashboardRoutes,
 } = require("./routes");
 require("dotenv").config();
 
@@ -49,6 +50,7 @@ app.use(bodyParser.json());
 app.use("/api", userAuthRoutes);
 app.use("/api/admin", adminAuthRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/admin", dashboardRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/vendor", vendorAuthRoutes);
 app.use("/api/vendor", vendorRoutes);

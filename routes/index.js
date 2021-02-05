@@ -4,3 +4,4 @@ exports.vendorRoutes = require("./vendor");
 exports.bookingRoutes = require("./booking");
 exports.staffRoutes = require("./staff");
 exports.adminRoutes = require("./admin");
+exports.dashboardRoutes = require("./dashboard");

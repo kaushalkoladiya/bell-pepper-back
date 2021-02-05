@@ -4,3 +4,4 @@ exports.VendorController = require("./Vendor");
 exports.BookingController = require("./Booking");
 exports.StaffController = require("./Staff");
 exports.AdminController = require("./Admin");
+exports.DashboardController = require("./Dashboard");
