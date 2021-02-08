@@ -39,6 +39,10 @@ const vendorSchema = new Schema(
         required: false,
       },
     ],
+    password: {
+      type: String,
+      default: null,
+    },
   },
   {
     timestamps: true,

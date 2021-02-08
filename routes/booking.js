@@ -1,6 +1,7 @@
 const express = require("express");
 const { body } = require("express-validator");
 const { BookingController } = require("../controller");
+const { AdminMiddleware } = require("../middleware");
 
 const router = express.Router();
 
@@ -24,7 +25,7 @@ const assignValidation = [
   body("bookingId").isAlphanumeric().withMessage("Invalid field Booking ID"),
 ];
 
-router.get("/", BookingController.index);
+router.get("/", AdminMiddleware, BookingController.index);
 router.get("/vendor/:vendorId", BookingController.indexByVendor);
 router.get("/service/:serviceId", BookingController.indexByService);
 router.get("/user/:userId", BookingController.indexByUser);

@@ -16,7 +16,7 @@ module.exports = async (req, res, next) => {
     if (!decodedToken) {
       throw new Error("Unauthorized");
     }
-    req.userType = decodedToken.userType;
+    req.userType = "VENDOR_USER";
     req.userId = decodedToken._id;
     return next();
   } catch (error) {

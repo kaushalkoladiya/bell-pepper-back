@@ -97,5 +97,3 @@ exports.isMobileNoExists = async (req, res, next) => {
     next(error);
   }
 };
-
-exports.loginWithEmail = async (req, res, next) => {};

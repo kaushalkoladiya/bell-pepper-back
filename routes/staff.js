@@ -1,6 +1,7 @@
 const express = require("express");
 const { body } = require("express-validator");
 const { StaffController } = require("../controller");
+const { AdminMiddleware } = require("../middleware");
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ const storeValidation = [
   body("mobile").isNumeric().withMessage("Invalid field Phone No."),
 ];
 
-router.get("/", StaffController.index);
+router.get("/", AdminMiddleware, StaffController.index);
 router.get("/service/:serviceId", StaffController.assignStaff);
 router.post("/", storeValidation, StaffController.store);
 router.delete("/:id", StaffController.destroy);

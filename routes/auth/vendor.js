@@ -31,15 +31,5 @@ const isMobileNoExistsValidation = [
 
 router.post("/signup", signupValidation, VendorAuthController.signup);
 router.post("/login", loginValidation, VendorAuthController.login);
-router.post(
-  "/loginWithEmail",
-  loginEmailValidation,
-  VendorAuthController.loginWithEmail
-);
-// router.get(
-//   "/isMobileNoExists",
-//   isMobileNoExistsValidation,
-//   VendorAuthController.isMobileNoExists
-// );
 
 module.exports = router;

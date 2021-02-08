@@ -1,32 +1,51 @@
 const { generateJWTToken } = require("../../helper");
-const { Admin } = require("../../model");
+const { Admin, Vendor } = require("../../model");
 
 exports.login = async (req, res, next) => {
   try {
-    const admin = await Admin.findOne({
-      email: req.body.email,
-      password: req.body.password,
-    });
+    const email = req.body.email;
+
+    let admin = await Admin.findOne({ email, password: req.body.password });
+
+    let payload, userType;
 
     if (!admin) {
-      const err = new Error("Email and Password are wrong!");
-      err.status = 422;
-      throw err;
+      const vendor = await Vendor.findOne({
+        email,
+        password: req.body.password,
+      });
+
+      if (!vendor) {
+        const err = new Error("Email and Password are wrong!");
+        err.status = 422;
+        throw err;
+      }
+
+      payload = {
+        _id: vendor._id,
+        name: vendor.companyName,
+        email: vendor.email,
+        userType: "VENDOR_USER",
+      };
+      userType = "VENDOR_USER";
+
+      admin = { ...vendor._doc, name: vendor.companyName };
+    } else {
+      payload = {
+        _id: admin._id,
+        name: admin.name,
+        email: admin.email,
+        userType: "ROOT_USER",
+      };
+      userType = "ROOT_USER";
     }
 
-    // generate token
-    const payload = {
-      _id: admin._id,
-      name: admin.name,
-      email: admin.email,
-      userType: "ROOT_USER",
-    };
     const token = generateJWTToken(payload);
 
     return res.status(200).json({
       status: 200,
       message: "User logged in successfully!",
-      data: { token, admin },
+      data: { token, admin, userType },
     });
   } catch (error) {
     next(error);

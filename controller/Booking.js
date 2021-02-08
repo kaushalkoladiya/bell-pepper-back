@@ -5,6 +5,8 @@ const faker = require("faker");
 
 exports.index = async (req, res, next) => {
   try {
+    // let condition = { deletedAt: null };
+    // if (req.userType !== "ROOT_USER") condition.vendorId = req.userId;
     const bookings = await getFilteredBooking();
 
     return res.status(200).json({

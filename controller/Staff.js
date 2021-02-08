@@ -4,14 +4,14 @@ const faker = require("faker");
 
 exports.index = async (req, res, next) => {
   try {
-    const staffs = await Staff.find({ deletedAt: null });
+    let condition = { deletedAt: null };
+    if (req.userType !== "ROOT_USER") condition.vendorId = req.userId;
+    const staffs = await Staff.find(condition);
 
     return res.status(200).json({
       status: 200,
       message: "Success",
-      data: {
-        staffs,
-      },
+      data: { staffs },
     });
   } catch (error) {
     next(error);

@@ -70,3 +70,25 @@ exports.faker = async (req, res, next) => {
     next(error);
   }
 };
+
+// logged in vendor's data
+exports.getVendorData = async (req, res, next) => {
+  try {
+    const vendor = await Vendor.findById(req.userId);
+
+    res.status(200).json({
+      status: 200,
+      message: "success",
+      data: {
+        // do not change it (Front-end is depends on this)
+        admin: {
+          ...vendor._doc,
+          password: "",
+          name: vendor.companyName,
+        },
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
