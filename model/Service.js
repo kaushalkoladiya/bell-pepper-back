@@ -7,6 +7,7 @@ const serviceSchema = new Schema(
     vendorId: {
       ref: "Vendor",
       type: Schema.Types.ObjectId,
+      default: null,
     },
     price: { type: String, default: null },
     title: { type: String, default: null },

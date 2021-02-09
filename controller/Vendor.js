@@ -1,4 +1,4 @@
-const { Service, Booking, Vendor, Staff } = require("../model");
+const { Booking, Vendor, Staff, Category } = require("../model");
 const faker = require("faker");
 
 exports.index = async (req, res, ext) => {
@@ -39,15 +39,15 @@ exports.destroy = async (req, res, next) => {
 
 exports.faker = async (req, res, next) => {
   try {
-    const serviceArray = await Service.find().select("_id");
+    const categoryArray = await Category.find().select("_id");
 
     const vendorArray = [];
     const length = req.query.count || 5;
     for (let index = 0; index < length; index++) {
-      const i = Math.floor(Math.random() * serviceArray.length);
+      const i = Math.floor(Math.random() * categoryArray.length);
 
       vendorArray.push({
-        serviceId: serviceArray[i]._id,
+        categoryId: categoryArray[i]._id,
         companyName: faker.company.companyName(),
         email: faker.internet.email(),
         mobile: faker.phone.phoneNumber(),

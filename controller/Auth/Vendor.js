@@ -54,7 +54,7 @@ exports.signup = async (req, res, next) => {
     }
 
     const vendor = await Vendor.create({
-      service: req.body.serviceId,
+      categoryId: req.body.categoryId,
       companyName: req.body.companyName,
       email: req.body.email,
       mobile: req.body.mobile,
@@ -66,8 +66,8 @@ exports.signup = async (req, res, next) => {
     });
     // generate token
     const payload = {
-      userType: "Vendor",
-      companyName: vendor.companyName,
+      userType: "VENDOR_USER",
+      name: vendor.companyName,
       mobile: vendor.mobile,
       email: vendor.email,
       _id: vendor.id,

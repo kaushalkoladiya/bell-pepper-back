@@ -17,6 +17,7 @@ const {
   staffRoutes,
   adminRoutes,
   dashboardRoutes,
+  categoryRoutes,
 } = require("./routes");
 require("dotenv").config();
 
@@ -57,6 +58,8 @@ app.use("/api/vendor", vendorRoutes);
 app.use("/api/staff", staffRoutes);
 app.use("/api/service", serviceRoutes);
 app.use("/api/booking", bookingRoutes);
+app.use("/api/category", categoryRoutes);
+
 app.use("/api/*", (req, res, next) => {
   res.status(404).json({
     status: 404,
