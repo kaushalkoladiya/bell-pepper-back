@@ -3,9 +3,11 @@ const faker = require("faker");
 
 exports.index = async (req, res, ext) => {
   try {
-    const vendors = await Vendor.find({ deletedAt: null }).sort({
-      createdAt: -1,
-    });
+    const vendors = await Vendor.find({ deletedAt: null })
+      .populate("categoryId")
+      .sort({
+        createdAt: -1,
+      });
     return res.status(200).json({
       status: 200,
       message: "Success",

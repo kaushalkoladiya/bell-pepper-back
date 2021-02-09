@@ -1,12 +1,14 @@
 const { validationResult } = require("express-validator");
 // const Service = require("../model/Service");
-const { Service, Vendor, Booking } = require("../model");
+const { Service, Vendor, Booking, Category } = require("../model");
 
 const faker = require("faker");
 
 exports.index = async (req, res, next) => {
   try {
-    const services = await Service.find().populate("vendorId");
+    const services = await Service.find({ deletedAt: null })
+      .populate("categoryId")
+      .sort({ createdAt: -1 });
 
     return res.status(200).json({
       status: 200,
@@ -49,6 +51,14 @@ exports.store = async (req, res, next) => {
       throw err;
     }
 
+    const category = await Category.findById(req.body.categoryId);
+
+    if (!category) {
+      const err = new Error("Category Not Found");
+      err.status = 404;
+      throw err;
+    }
+
     if (req.isImageTypeInvalid) {
       const err = new Error("Invalid image type");
       err.status = 422;
@@ -60,14 +70,17 @@ exports.store = async (req, res, next) => {
     }
 
     const service = await Service.create({
-      ...req.body,
+      categoryId: req.body.categoryId,
+      price: req.body.price,
+      title: req.body.title,
+      description: req.body.description,
       image: req.file.path,
     });
 
     return res.status(200).json({
       status: 200,
       message: "Success",
-      data: { service },
+      data: { service: { ...service._doc, categoryId: category } },
     });
   } catch (error) {
     next(error);
@@ -87,10 +100,19 @@ exports.update = async (req, res, next) => {
       throw err;
     }
 
+    const category = await Category.findById(req.body.categoryId);
+
+    if (!category) {
+      const err = new Error("Category Not Found");
+      err.status = 404;
+      throw err;
+    }
+
     const updatedService = {
       price: req.body.price,
       title: req.body.title,
       description: req.body.description,
+      categoryId: req.body.categoryId,
     };
 
     if (req.file) {
@@ -115,7 +137,7 @@ exports.update = async (req, res, next) => {
     return res.status(200).json({
       status: 200,
       message: "Success",
-      data: { service },
+      data: { service: { ...service._doc, categoryId: category } },
     });
   } catch (error) {
     next(error);
@@ -152,11 +174,11 @@ exports.faker = async (req, res, next) => {
         image: faker.image.fashion(),
       });
     }
-    await Service.insertMany(serviceArray);
+    // await Service.insertMany(serviceArray);
 
     res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Currently service will not be inserted.",
       data: { Services: serviceArray },
     });
   } catch (error) {

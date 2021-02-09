@@ -7,10 +7,12 @@ const multer = require("../helper/multer");
 const router = express.Router();
 
 const storeValidation = [
+  body("categoryId").isAlphanumeric().withMessage("Invalid category id"),
   body("title").notEmpty().withMessage("Invalid title"),
   body("description").notEmpty().withMessage("Invalid description"),
   body("price").isNumeric().withMessage("Price must be a number"),
 ];
+
 router.get("/faker", ServiceController.faker);
 
 router.get("/", AdminMiddleware, ServiceController.index);

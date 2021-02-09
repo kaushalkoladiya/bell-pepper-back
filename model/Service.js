@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 
 const serviceSchema = new Schema(
   {
-    vendorId: {
-      ref: "Vendor",
+    categoryId: {
+      ref: "Category",
       type: Schema.Types.ObjectId,
       default: null,
     },
