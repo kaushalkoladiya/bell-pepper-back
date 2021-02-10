@@ -5,9 +5,9 @@ const faker = require("faker");
 
 exports.index = async (req, res, next) => {
   try {
-    // let condition = { deletedAt: null };
-    // if (req.userType !== "ROOT_USER") condition.vendorId = req.userId;
-    const bookings = await getFilteredBooking();
+    let condition = { deletedAt: null };
+    if (req.userType !== "ROOT_USER") condition.vendorId = req.userId;
+    const bookings = await getFilteredBooking(condition);
 
     return res.status(200).json({
       status: 200,
@@ -144,12 +144,12 @@ exports.assignStaff = async (req, res, next) => {
       throw err;
     }
 
-    // do this condition to not (if not).
-    if (!staff.isAvailable) {
-      const err = new Error("Staff is not available!");
-      err.status = 422;
-      throw err;
-    }
+    // // do this condition to not (if not).
+    // if (!staff.isAvailable) {
+    //   const err = new Error("Staff is not available!");
+    //   err.status = 422;
+    //   throw err;
+    // }
 
     booking.profession = mongoose.Types.ObjectId(req.body.staffId);
     await booking.save();
@@ -164,6 +164,51 @@ exports.assignStaff = async (req, res, next) => {
         booking: {
           ...booking._doc,
           staffId: staff,
+        },
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.assignVendor = async (req, res, next) => {
+  try {
+    const validatedData = validationResult(req);
+    if (!validatedData.isEmpty()) {
+      const err = new Error("Validation Fail");
+      err.status = 422;
+      err.errors = validatedData.errors.map((error) => ({
+        message: error.msg,
+        name: error.param,
+      }));
+      throw err;
+    }
+
+    const booking = await Booking.findById(req.body.bookingId);
+    if (!booking) {
+      const err = new Error("Booking not found");
+      err.status = 404;
+      throw err;
+    }
+
+    const vendor = await Vendor.findById(req.body.vendorId);
+    if (!vendor) {
+      const err = new Error("Vendor not found");
+      err.status = 404;
+      throw err;
+    }
+
+    booking.vendorId = mongoose.Types.ObjectId(req.body.vendorId);
+    await booking.save();
+
+    return res.status(200).json({
+      status: 200,
+      message: "Vendor assign successfully.",
+      data: {
+        booking: {
+          ...booking._doc,
+          vendorId: vendor,
         },
       },
     });

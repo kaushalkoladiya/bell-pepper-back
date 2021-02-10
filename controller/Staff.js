@@ -20,7 +20,10 @@ exports.index = async (req, res, next) => {
 
 exports.indexByVendor = async (req, res, next) => {
   try {
-    const staffs = await Staff.find({ vendorId: req.params.vendorId });
+    const staffs = await Staff.find({
+      vendorId: req.params.vendorId,
+      deletedAt: null,
+    });
 
     return res.status(200).json({
       status: 200,
@@ -30,6 +33,7 @@ exports.indexByVendor = async (req, res, next) => {
       },
     });
   } catch (error) {
+    console.error(error);
     next(error);
   }
 };
@@ -136,13 +140,18 @@ exports.destroy = async (req, res, next) => {
 
 exports.assignStaff = async (req, res, next) => {
   try {
-    const vendors = await Vendor.find({
-      serviceId: req.params.serviceId,
-    }).select("_id");
+    const validatedData = validationResult(req);
+    if (!validatedData.isEmpty()) {
+      const err = new Error("Validation Fail");
+      err.status = 422;
+      err.errors = validatedData.errors.map((error) => ({
+        message: error.msg,
+        name: error.param,
+      }));
+      throw err;
+    }
 
-    const vendorIds = vendors.map((item) => item._id);
-
-    const staffs = await Staff.find({ vendorId: { $in: vendorIds } });
+    const staffs = await Staff.find({ vendorId: req.params.vendorId });
 
     res.status(200).json({
       status: 200,
@@ -150,6 +159,7 @@ exports.assignStaff = async (req, res, next) => {
       data: { staffs },
     });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };

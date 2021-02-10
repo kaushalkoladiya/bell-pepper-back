@@ -20,9 +20,14 @@ const storeValidation = [
   body("time").notEmpty().withMessage("Invalid field Time"),
 ];
 
-const assignValidation = [
+const assignStaffValidation = [
   body("staffId").isAlphanumeric().withMessage("Invalid field Staff ID"),
   body("bookingId").isAlphanumeric().withMessage("Invalid field Booking ID"),
+];
+
+const assignVendorValidation = [
+  body("bookingId").isAlphanumeric().withMessage("Invalid field Staff ID"),
+  body("vendorId").isAlphanumeric().withMessage("Invalid field Booking ID"),
 ];
 
 router.get("/", AdminMiddleware, BookingController.index);
@@ -30,7 +35,16 @@ router.get("/vendor/:vendorId", BookingController.indexByVendor);
 router.get("/service/:serviceId", BookingController.indexByService);
 router.get("/user/:userId", BookingController.indexByUser);
 router.post("/", storeValidation, BookingController.store);
-router.put("/assignStaff", assignValidation, BookingController.assignStaff);
+router.put(
+  "/assignStaff",
+  assignStaffValidation,
+  BookingController.assignStaff
+);
+router.put(
+  "/assignVendor",
+  assignVendorValidation,
+  BookingController.assignVendor
+);
 router.put("/removeStaff", BookingController.removeStaff);
 router.get("/faker", BookingController.faker);
 router.delete("/:id", BookingController.destroy);

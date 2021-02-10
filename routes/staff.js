@@ -1,5 +1,5 @@
 const express = require("express");
-const { body } = require("express-validator");
+const { body, query } = require("express-validator");
 const { StaffController } = require("../controller");
 const { AdminMiddleware } = require("../middleware");
 
@@ -14,7 +14,11 @@ const storeValidation = [
 ];
 
 router.get("/", AdminMiddleware, StaffController.index);
-router.get("/service/:serviceId", StaffController.assignStaff);
+router.get(
+  "/vendor/:vendorId",
+  [query("vendorId").notEmpty().withMessage("Invalid vendorId")],
+  StaffController.indexByVendor
+);
 router.post("/", storeValidation, StaffController.store);
 router.delete("/:id", StaffController.destroy);
 router.get("/faker", StaffController.faker);
