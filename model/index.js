@@ -5,3 +5,4 @@ exports.Booking = require("./Booking");
 exports.Staff = require("./Staff");
 exports.Admin = require("./Admin");
 exports.Category = require("./Category");
+exports.Banner = require("./Banner");

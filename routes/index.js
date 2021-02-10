@@ -6,3 +6,4 @@ exports.staffRoutes = require("./staff");
 exports.adminRoutes = require("./admin");
 exports.dashboardRoutes = require("./dashboard");
 exports.categoryRoutes = require("./category");
+exports.bannerRoutes = require("./banner");

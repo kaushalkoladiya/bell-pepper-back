@@ -6,3 +6,4 @@ exports.StaffController = require("./Staff");
 exports.AdminController = require("./Admin");
 exports.DashboardController = require("./Dashboard");
 exports.CategoryController = require("./Category");
+exports.BannerController = require("./Banner");
