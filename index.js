@@ -18,7 +18,8 @@ const {
   adminRoutes,
   dashboardRoutes,
   categoryRoutes,
-  reportsRoutes
+  reportsRoutes,
+  bannerRoutes,
 } = require("./routes");
 require("dotenv").config();
 
@@ -61,6 +62,7 @@ app.use("/api/service", serviceRoutes);
 app.use("/api/booking", bookingRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/reports", reportsRoutes);
+app.use("/api/banner", bannerRoutes);
 
 app.use("/api/*", (req, res, next) => {
   res.status(404).json({

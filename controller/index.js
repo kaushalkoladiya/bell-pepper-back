@@ -7,3 +7,4 @@ exports.AdminController = require("./Admin");
 exports.DashboardController = require("./Dashboard");
 exports.CategoryController = require("./Category");
 exports.ReportsController = require("./Reports");
+exports.BannerController = require("./Banner");
