@@ -19,6 +19,8 @@ const staffSchema = new Schema(
     idProof: { type: String, default: null },
     isAvailable: { type: Boolean, default: true },
     deletedAt: { type: Date, default: null },
+    isBlocked: { type: Boolean, default: false },
+    blockedByWhom: { type: String, default: null },
   },
   {
     timestamps: true,
