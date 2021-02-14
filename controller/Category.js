@@ -1,6 +1,6 @@
 const { validationResult } = require("express-validator");
 const fs = require("fs");
-
+const { BASE_URL } = require("../helper");
 const { Category } = require("../model");
 
 exports.index = async (req, res, next) => {
@@ -40,7 +40,7 @@ exports.store = async (req, res, next) => {
     const categoryData = { name: req.body.name };
 
     if (req.file) {
-      categoryData.image = req.file.path;
+      categoryData.image = BASE_URL + req.file.path;
       categoryData.hasImage = true;
     }
 
@@ -89,7 +89,7 @@ exports.update = async (req, res, next) => {
 
     if (req.file) {
       deleteFile(category.image_url);
-      category.image_url = req.file.path;
+      category.image_url = BASE_URL + req.file.path;
     }
 
     await category.save();

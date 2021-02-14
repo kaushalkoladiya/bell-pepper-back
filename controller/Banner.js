@@ -1,4 +1,4 @@
-const { deleteFile, deleteReqFile } = require("../helper");
+const { deleteFile, deleteReqFile, BASE_URL } = require("../helper");
 const { Banner } = require("../model");
 
 exports.index = async (req, res, next) => {
@@ -25,7 +25,7 @@ exports.store = async (req, res, next) => {
       err.status = 422;
       throw err;
     }
-    const banner = await Banner.create({ image: req.file.path });
+    const banner = await Banner.create({ image: BASE_URL + req.file.path });
 
     return res
       .status(200)

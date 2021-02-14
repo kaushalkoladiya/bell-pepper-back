@@ -74,7 +74,7 @@ exports.store = async (req, res, next) => {
       price: req.body.price,
       title: req.body.title,
       description: req.body.description,
-      image: req.file.path,
+      image: BASE_URL + req.file.path,
     });
 
     return res.status(200).json({
@@ -125,7 +125,7 @@ exports.update = async (req, res, next) => {
         err.status = 422;
         throw err;
       }
-      updatedService.image = req.file.path;
+      updatedService.image = BASE_URL + req.file.path;
     }
 
     const service = await Service.findByIdAndUpdate(
