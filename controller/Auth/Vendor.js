@@ -89,9 +89,28 @@ exports.signup = async (req, res, next) => {
 
 exports.isMobileNoExists = async (req, res, next) => {
   try {
+    const isMobileNoExists = await Vendor.exists({ mobile: req.body.mobile });
+
+    const otpCode = otp();
+
+    if (!isMobileNoExists) {
+      return res.status(200).json({
+        status: 200,
+        message: "Mobile no. is not registered",
+        data: {
+          isMobileNoExists: false,
+          otp: otpCode,
+        },
+      });
+    }
+
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Mobile no. is registered",
+      data: {
+        isMobileNoExists: true,
+        otp: otpCode,
+      },
     });
   } catch (error) {
     next(error);
