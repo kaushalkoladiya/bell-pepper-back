@@ -15,4 +15,5 @@ const signupValidation = [
 ];
 
 router.post("/signup", signupValidation, VendorAuthController.signup);
+router.post("/login", signupValidation, VendorAuthController.login);
 module.exports = router;
