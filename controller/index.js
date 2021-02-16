@@ -8,3 +8,5 @@ exports.DashboardController = require("./Dashboard");
 exports.CategoryController = require("./Category");
 exports.ReportsController = require("./Reports");
 exports.BannerController = require("./Banner");
+exports.VideoController = require("./Video");
+exports.TutorialController = require("./Tutorial");

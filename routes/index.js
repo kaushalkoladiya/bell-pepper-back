@@ -8,3 +8,5 @@ exports.dashboardRoutes = require("./dashboard");
 exports.categoryRoutes = require("./category");
 exports.reportsRoutes = require("./reports");
 exports.bannerRoutes = require("./banner");
+exports.videoRoutes = require("./video");
+exports.tutorialRoutes = require("./tutorial");

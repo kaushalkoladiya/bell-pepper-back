@@ -15,7 +15,9 @@ const fileFilter = (req, file, callBack) => {
   if (
     file.mimetype === "image/jpg" ||
     file.mimetype === "image/png" ||
-    file.mimetype === "image/jpeg"
+    file.mimetype === "image/jpeg" ||
+    file.mimetype === "video/mp4" ||
+    file.mimetype === "video/webm"
   ) {
     req.isImageTypeInvalid = false;
     callBack(null, true);

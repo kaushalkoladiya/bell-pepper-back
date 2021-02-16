@@ -6,3 +6,5 @@ exports.Staff = require("./Staff");
 exports.Admin = require("./Admin");
 exports.Category = require("./Category");
 exports.Banner = require("./Banner");
+exports.Tutorial = require("./Tutorial");
+exports.Video = require("./Video");

@@ -20,6 +20,8 @@ const {
   categoryRoutes,
   reportsRoutes,
   bannerRoutes,
+  videoRoutes,
+  tutorialRoutes,
 } = require("./routes");
 require("dotenv").config();
 
@@ -63,6 +65,8 @@ app.use("/api/booking", bookingRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/reports", reportsRoutes);
 app.use("/api/banner", bannerRoutes);
+app.use("/api/video", videoRoutes);
+app.use("/api/tutorial", tutorialRoutes);
 
 app.use("/api/*", (req, res, next) => {
   res.status(404).json({
@@ -76,6 +80,7 @@ app.get("/*", function (req, res) {
     .sendFile(path.join(__dirname, "public", "build", "index.html"));
 });
 app.use((err, req, res, next) => {
+  console.log(err);
   return res.status(err.status || 500).json({
     message: err.message || "Server Error",
     errors: err.errors,
