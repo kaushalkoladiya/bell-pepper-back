@@ -2,6 +2,7 @@ const { validationResult } = require("express-validator");
 const { generateJWTToken } = require("../../helper");
 const { Vendor } = require("../../model");
 const faker = require("faker");
+const { VENDOR_USER } = require("../../constant");
 
 exports.login = async (req, res, next) => {
   try {
@@ -15,16 +16,20 @@ exports.login = async (req, res, next) => {
 
     // generate token
     const payload = {
-      company_name: vendor.company_name,
-      mobile: vendor.mobile,
+      userType: VENDOR_USER,
       address: vendor.address,
+      categoryId: vendor.categoryId,
+      companyName: vendor.companyName,
+      email: vendor.email,
+      mobile: vendor.mobile,
+      _id: vendor._id,
     };
     const token = generateJWTToken(payload);
 
     return res.status(200).json({
       status: 200,
       message: "User logged in successfully!",
-      data: { token },
+      data: { token, vendor: { ...payload, userType: null } },
     });
   } catch (error) {
     next(error);

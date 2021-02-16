@@ -1,7 +1,9 @@
 const { validationResult } = require("express-validator");
+const jwt = require("jsonwebtoken");
 const { generateJWTToken } = require("../../helper");
 const { User } = require("../../model");
 const { otp } = require("../../helper");
+const { CUSTOMER_USER } = require("../../constant");
 
 exports.signup = async (req, res, next) => {
   try {
@@ -62,16 +64,23 @@ exports.login = async (req, res, next) => {
 
     // generate token
     const payload = {
+      userType: CUSTOMER_USER,
       name: user.name,
       mobile: user.mobile,
       email: user.email,
+      dob: user.dob,
+      location: user.location,
+      lat: user.lat,
+      lon: user.lon,
+      city: user.city,
+      _id: user._id,
     };
     const token = generateJWTToken(payload);
 
     return res.status(200).json({
       status: 200,
       message: "User logged in successfully!",
-      data: { token },
+      data: { token, user: { ...payload, userType: null } },
     });
   } catch (error) {
     next(error);
