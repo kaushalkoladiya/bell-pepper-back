@@ -91,7 +91,9 @@ exports.update = async (req, res, next) => {
 
 exports.destroy = async (req, res, next) => {
   try {
-    const video = await Video.findByIdAndDelete(req.params.videoId);
+    const video = await Video.findByIdAndUpdate(req.params.videoId, {
+      deletedAt: new Date().toISOString(),
+    });
     deleteFile(video.url);
     return res.status(200).json({ status: 200, message: "Success", data: {} });
   } catch (error) {

@@ -146,9 +146,11 @@ exports.update = async (req, res, next) => {
 
 exports.destroy = async (req, res, next) => {
   try {
-    const service = await Service.findByIdAndDelete(req.params.id);
+    const service = await Service.findByIdAndUpdate(req.params.id, {
+      deletedAt: new Date().toISOString(),
+    });
 
-    await Booking.deleteMany({ serviceId: req.params.id });
+    // await Booking.deleteMany({ serviceId: req.params.id });
 
     return res.status(200).json({
       status: 200,

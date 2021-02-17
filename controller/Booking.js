@@ -321,15 +321,15 @@ exports.faker = async (req, res, next) => {
 
 exports.destroy = async (req, res, next) => {
   try {
-    const booking = await Booking.findByIdAndDelete(req.params.id);
-    if (!booking) {
-      return res.status(404).send({
-        message: "Can't Found Id",
-      });
-    }
-    res
-      .status(200)
-      .send({ status: 200, message: "Booking deleted successfully!" });
+    await Booking.findByIdAndUpdate(req.params.id, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    return res.status(200).send({
+      status: 200,
+      message: "Booking deleted successfully!",
+      data: {},
+    });
   } catch (error) {
     next(error);
   }

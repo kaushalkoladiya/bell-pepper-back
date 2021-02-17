@@ -22,9 +22,11 @@ exports.index = async (req, res, ext) => {
 
 exports.destroy = async (req, res, next) => {
   try {
-    const vendor = await Vendor.findByIdAndDelete(req.params.id);
-    await Staff.deleteMany({ vendorId: req.params.id });
-    await Booking.deleteMany({ vendorId: req.params.id });
+    const vendor = await Vendor.findByIdAndUpdate(req.params.id, {
+      deletedAt: new Date().toISOString(),
+    });
+    // await Staff.deleteMany({ vendorId: req.params.id });
+    // await Booking.deleteMany({ vendorId: req.params.id });
 
     if (!vendor) {
       return res.status(404).send({

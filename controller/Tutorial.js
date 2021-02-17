@@ -91,7 +91,9 @@ exports.update = async (req, res, next) => {
 
 exports.destroy = async (req, res, next) => {
   try {
-    const tutorial = await Tutorial.findByIdAndDelete(req.params.tutorialId);
+    const tutorial = await Tutorial.findByIdAndUpdate(req.params.tutorialId, {
+      deletedAt: new Date().toISOString(),
+    });
     deleteFile(tutorial.image);
     return res.status(200).json({ status: 200, message: "Success", data: {} });
   } catch (error) {

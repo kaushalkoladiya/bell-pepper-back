@@ -39,19 +39,11 @@ exports.store = async (req, res, next) => {
 
 exports.destroy = async (req, res, next) => {
   try {
-    const banner = await Banner.findById(req.params.bannerId);
-    if (!banner) {
-      const err = new Error("Not found");
-      err.status = 404;
-      throw err;
-    }
+    await Banner.findByIdAndUpdate(req.params.bannerId, {
+      deletedAt: new Date().toISOString(),
+    });
 
-    deleteFile(banner.image);
-    await banner.deleteOne();
-
-    return res
-      .status(200)
-      .json({ status: 200, message: "Success", data: { banner } });
+    return res.status(200).json({ status: 200, message: "Success", data: {} });
   } catch (error) {
     next(error);
   }

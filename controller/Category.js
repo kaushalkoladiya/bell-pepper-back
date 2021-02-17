@@ -105,15 +105,17 @@ exports.update = async (req, res, next) => {
 exports.destroy = async (req, res, next) => {
   try {
     // Check Post is Exist or not
-    const category = await Category.findById(req.params.category_id);
-    if (!category) {
-      deleteReqFile(req);
-      const err = new Error("Not found");
-      err.status = 404;
-      throw err;
-    }
-    deleteFile(category.image_url);
-    const result = await category.deleteOne();
+    const category = await Category.findByIdAndUpdate(req.params.category_id, {
+      deletedAt: new Date().toISOString(),
+    });
+    // if (!category) {
+    //   deleteReqFile(req);
+    //   const err = new Error("Not found");
+    //   err.status = 404;
+    //   throw err;
+    // }
+    // deleteFile(category.image_url);
+    // const result = await category.deleteOne();
 
     return res.status(200).json({
       status: 200,

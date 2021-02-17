@@ -151,23 +151,18 @@ exports.uploadProof = async (req, res, next) => {
 
 exports.destroy = async (req, res, next) => {
   try {
-    const staff = await Staff.findById(req.params.id);
-    if (!staff) {
-      const err = new Error("Staff not found");
-      err.status = 404;
-      throw err;
-    }
-
-    staff.deletedAt = new Date().toISOString();
-
-    await staff.save();
+    const staff = await Staff.findByIdAndUpdate(req.params.id, {
+      deletedAt: new Date().toISOString(),
+    });
 
     // await Booking.updateMany(
     //   { staffId: req.params.id },
     //   { deletedAt: new Date().toISOString() }
     // );
 
-    return res.send({ message: "staff deleted successfully!", status: 200 });
+    return res
+      .status(200)
+      .send({ message: "Staff deleted successfully!", status: 200 });
   } catch (error) {
     next(error);
   }

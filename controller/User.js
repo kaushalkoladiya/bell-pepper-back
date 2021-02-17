@@ -3,7 +3,7 @@ const faker = require("faker");
 
 exports.index = async (req, res, ext) => {
   try {
-    const users = await User.find();
+    const users = await User.find({ deletedAt: null });
     return res.status(200).json({
       status: 200,
       message: "Success",
@@ -48,8 +48,13 @@ exports.faker = async (req, res, next) => {
 
 exports.destroy = async (req, res, next) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
-    await Booking.deleteMany({ userId: req.params.id });
+    const user = await User.findByIdAndUpdate(req.params.id, {
+      deletedAt: new Date().toISOString(),
+    });
+    // await Booking.updateMany(
+    //   { userId: req.params.id },
+    //   { deletedAt: new Date().toISOString() }
+    // );
 
     if (!user) {
       return res.status(404).send({
