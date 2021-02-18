@@ -43,12 +43,12 @@ exports.counts = async (req, res, next) => {
       };
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Get dashboard information successfully!",
       data,
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };

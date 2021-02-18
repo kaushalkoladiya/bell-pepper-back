@@ -6,13 +6,13 @@ exports.index = async (req, res, ext) => {
     const users = await User.find({ deletedAt: null });
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Get all customers successfully!",
       data: {
         users,
       },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -38,11 +38,11 @@ exports.faker = async (req, res, next) => {
 
     res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Faking user successfully done!",
       data: { users: userArray },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -63,6 +63,6 @@ exports.destroy = async (req, res, next) => {
     }
     res.send({ message: "User deleted successfully!" });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };

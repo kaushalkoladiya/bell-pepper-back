@@ -10,13 +10,13 @@ exports.index = async (req, res, ext) => {
       });
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Get all vendors successfully!",
       data: {
         vendors,
       },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -37,7 +37,7 @@ exports.destroy = async (req, res, next) => {
       .status(200)
       .send({ status: 200, message: "vendor deleted successfully!" });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -67,11 +67,11 @@ exports.faker = async (req, res, next) => {
 
     res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Faking vendors successfully done!",
       data: { vendors: vendorArray },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -82,7 +82,7 @@ exports.getVendorData = async (req, res, next) => {
 
     res.status(200).json({
       status: 200,
-      message: "success",
+      message: "Get all vendor data successfully!",
       data: {
         // do not change it (Front-end is depends on this)
         admin: {
@@ -93,6 +93,6 @@ exports.getVendorData = async (req, res, next) => {
       },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };

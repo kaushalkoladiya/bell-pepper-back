@@ -13,11 +13,11 @@ exports.index = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Get all staffs successfully!",
       data: { staffs },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -30,14 +30,14 @@ exports.indexByVendor = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Get all staffs successfully!",
       data: {
         staffs,
       },
     });
   } catch (error) {
     console.error(error);
-    next(error);
+    return next(error);
   }
 };
 
@@ -78,12 +78,12 @@ exports.store = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Staff created successfully!",
       data: { staff },
     });
   } catch (error) {
     console.log(error);
-    next(error);
+    return next(error);
   }
 };
 
@@ -120,12 +120,12 @@ exports.update = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Staff updated successfully!",
       data: { staff },
     });
   } catch (error) {
     deleteReqFile(req);
-    next(error);
+    return next(error);
   }
 };
 
@@ -145,7 +145,7 @@ exports.uploadProof = async (req, res, next) => {
       .status(200)
       .json({ status: 200, message: "Proof uploaded successfully!", data: {} });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -164,7 +164,7 @@ exports.destroy = async (req, res, next) => {
       .status(200)
       .send({ message: "Staff deleted successfully!", status: 200 });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -192,10 +192,10 @@ exports.faker = async (req, res, next) => {
 
     res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Staff deleted successfully!",
       data: { staffs: staffArray },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };

@@ -4,9 +4,9 @@ exports.getAdminData = async (req, res, next) => {
   try {
     const admin = await Admin.findById(req.userId);
 
-    res.status(200).json({
+    return res.status(200).json({
       status: 200,
-      message: "success",
+      message: "Get your data successfully!",
       data: {
         admin: {
           ...admin._doc,
@@ -15,7 +15,7 @@ exports.getAdminData = async (req, res, next) => {
       },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -25,9 +25,9 @@ exports.updateAdminData = async (req, res, next) => {
       new: true,
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       status: 200,
-      message: "success",
+      message: "Your details has been updated successfully!",
       data: {
         admin: {
           ...admin._doc,
@@ -36,6 +36,6 @@ exports.updateAdminData = async (req, res, next) => {
       },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };

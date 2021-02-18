@@ -48,6 +48,6 @@ exports.login = async (req, res, next) => {
       data: { token, admin, userType },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };

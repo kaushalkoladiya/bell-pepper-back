@@ -12,13 +12,13 @@ exports.index = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Get all services successfully!",
       data: {
         services,
       },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -28,13 +28,13 @@ exports.indexByVendorId = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Get all services successfully!",
       data: {
         services,
       },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -79,11 +79,11 @@ exports.store = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Service created successfully!",
       data: { service: { ...service._doc, categoryId: category } },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -136,11 +136,11 @@ exports.update = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Service updated successfully!",
       data: { service: { ...service._doc, categoryId: category } },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -154,11 +154,11 @@ exports.destroy = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Service deleted successfully!",
       data: { service },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -184,6 +184,6 @@ exports.faker = async (req, res, next) => {
       data: { Services: serviceArray },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };

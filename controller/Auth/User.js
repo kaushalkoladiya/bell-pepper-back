@@ -45,7 +45,7 @@ exports.signup = async (req, res, next) => {
       },
     });
   } catch (error) {
-    next(error);
+    return next(error);
     // return res
     //   .status(error.status || 500)
     //   .json({ error: error.message || "Server Error" });
@@ -83,7 +83,7 @@ exports.login = async (req, res, next) => {
       data: { token, user: { ...payload, userType: null } },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -113,6 +113,6 @@ exports.isMobileNoExists = async (req, res, next) => {
       },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };

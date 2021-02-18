@@ -8,13 +8,13 @@ exports.index = async (req, res, next) => {
     });
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Get all banners successfully!",
       data: {
         banners,
       },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -29,11 +29,15 @@ exports.store = async (req, res, next) => {
 
     return res
       .status(200)
-      .json({ status: 200, message: "Success", data: { banner } });
+      .json({
+        status: 200,
+        message: "Banner created successfully!",
+        data: { banner },
+      });
   } catch (error) {
     console.log(error);
     deleteReqFile(req);
-    next(error);
+    return next(error);
   }
 };
 
@@ -43,9 +47,11 @@ exports.destroy = async (req, res, next) => {
       deletedAt: new Date().toISOString(),
     });
 
-    return res.status(200).json({ status: 200, message: "Success", data: {} });
+    return res
+      .status(200)
+      .json({ status: 200, message: "Banner deleted successfully!", data: {} });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -67,7 +73,7 @@ exports.toggleShow = async (req, res, next) => {
       data: { banner },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -89,6 +95,6 @@ exports.toggleIsLive = async (req, res, next) => {
       data: { banner },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };

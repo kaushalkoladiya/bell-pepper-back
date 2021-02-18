@@ -10,13 +10,13 @@ exports.index = async (req, res, next) => {
     });
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Get all categories successfully!",
       data: {
         categories,
       },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -48,10 +48,14 @@ exports.store = async (req, res, next) => {
 
     res
       .status(200)
-      .json({ status: 200, message: "Success", data: { category } });
+      .json({
+        status: 200,
+        message: "Category created successfully!",
+        data: { category },
+      });
   } catch (error) {
     console.log(error);
-    next(error);
+    return next(error);
   }
 };
 
@@ -96,9 +100,13 @@ exports.update = async (req, res, next) => {
 
     res
       .status(200)
-      .json({ status: 200, message: "Success", data: { category } });
+      .json({
+        status: 200,
+        message: "Category updated successfully!",
+        data: { category },
+      });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -119,7 +127,7 @@ exports.destroy = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Category deleted successfully!",
       data: { category },
     });
   } catch (error) {

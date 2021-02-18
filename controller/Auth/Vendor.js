@@ -32,7 +32,7 @@ exports.login = async (req, res, next) => {
       data: { token, vendor: { ...payload, userType: null } },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -71,7 +71,7 @@ exports.signup = async (req, res, next) => {
     });
     // generate token
     const payload = {
-      userType: "VENDOR_USER",
+      userType: VENDOR_USER,
       name: vendor.companyName,
       mobile: vendor.mobile,
       email: vendor.email,
@@ -81,14 +81,14 @@ exports.signup = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Vendor logged in successfully!",
       data: {
         vendor,
         token,
       },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -118,6 +118,6 @@ exports.isMobileNoExists = async (req, res, next) => {
       },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };

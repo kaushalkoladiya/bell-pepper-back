@@ -11,13 +11,13 @@ exports.index = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Get all bookings successfully!",
       data: {
         bookings,
       },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -29,13 +29,13 @@ exports.indexByVendor = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Get all bookings successfully!",
       data: {
         bookings,
       },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -47,13 +47,13 @@ exports.indexByService = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Get all bookings successfully!",
       data: {
         bookings,
       },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -63,13 +63,13 @@ exports.indexByUser = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Get all bookings successfully!",
       data: {
         bookings,
       },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -109,11 +109,11 @@ exports.store = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Booking created successfully!",
       data: { booking },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -168,7 +168,7 @@ exports.assignStaff = async (req, res, next) => {
       },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -213,7 +213,7 @@ exports.assignVendor = async (req, res, next) => {
       },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -257,7 +257,7 @@ exports.removeStaff = async (req, res, next) => {
       data: {},
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -311,11 +311,11 @@ exports.faker = async (req, res, next) => {
 
     res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Booking fackings successfully!",
       data: { bookings: bookingArray },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -331,6 +331,6 @@ exports.destroy = async (req, res, next) => {
       data: {},
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };

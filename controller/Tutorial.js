@@ -9,9 +9,13 @@ exports.index = async (req, res, next) => {
     });
     return res
       .status(200)
-      .json({ status: 200, message: "Success", data: { tutorials } });
+      .json({
+        status: 200,
+        message: "Get all tutorials successfully!",
+        data: { tutorials },
+      });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -41,13 +45,13 @@ exports.store = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Tutorial created successfully!",
       data: { tutorial },
     });
   } catch (error) {
     console.log(error);
     deleteReqFile(req);
-    next(error);
+    return next(error);
   }
 };
 
@@ -80,12 +84,12 @@ exports.update = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      message: "Success",
+      message: "Tutorial updated successfully!",
       data: { tutorial },
     });
   } catch (error) {
     deleteReqFile(req);
-    next(error);
+    return next(error);
   }
 };
 
@@ -95,8 +99,14 @@ exports.destroy = async (req, res, next) => {
       deletedAt: new Date().toISOString(),
     });
     deleteFile(tutorial.image);
-    return res.status(200).json({ status: 200, message: "Success", data: {} });
+    return res
+      .status(200)
+      .json({
+        status: 200,
+        message: "Tutorial deleted successfully!",
+        data: {},
+      });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
