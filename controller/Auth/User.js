@@ -30,9 +30,16 @@ exports.signup = async (req, res, next) => {
     const user = await User.create(req.body);
     // generate token
     const payload = {
+      userType: CUSTOMER_USER,
       name: user.name,
       mobile: user.mobile,
       email: user.email,
+      dob: user.dob,
+      location: user.location,
+      lat: user.lat,
+      lon: user.lon,
+      city: user.city,
+      _id: user._id,
     };
     const token = generateJWTToken(payload);
 

@@ -72,10 +72,12 @@ exports.signup = async (req, res, next) => {
     // generate token
     const payload = {
       userType: VENDOR_USER,
-      name: vendor.companyName,
-      mobile: vendor.mobile,
+      address: vendor.address,
+      categoryId: vendor.categoryId,
+      companyName: vendor.companyName,
       email: vendor.email,
-      _id: vendor.id,
+      mobile: vendor.mobile,
+      _id: vendor._id,
     };
     const token = generateJWTToken(payload);
 
