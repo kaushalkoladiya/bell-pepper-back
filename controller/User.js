@@ -31,6 +31,7 @@ exports.faker = async (req, res, next) => {
         lat: faker.address.latitude(),
         lon: faker.address.longitude(),
         city: faker.address.city(),
+        createdAt: faker.date.past(),
       });
     }
 
