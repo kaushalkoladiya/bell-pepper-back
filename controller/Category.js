@@ -46,13 +46,11 @@ exports.store = async (req, res, next) => {
 
     const category = await Category.create(categoryData);
 
-    res
-      .status(200)
-      .json({
-        status: 200,
-        message: "Category created successfully!",
-        data: { category },
-      });
+    res.status(200).json({
+      status: 200,
+      message: "Category created successfully!",
+      data: { category },
+    });
   } catch (error) {
     console.log(error);
     return next(error);
@@ -92,19 +90,18 @@ exports.update = async (req, res, next) => {
     category.name = req.body.name;
 
     if (req.file) {
-      deleteFile(category.image_url);
-      category.image_url = BASE_URL + req.file.path;
+      deleteFile(category.image);
+      category.hasImage = true;
+      category.image = BASE_URL + req.file.path;
     }
 
     await category.save();
 
-    res
-      .status(200)
-      .json({
-        status: 200,
-        message: "Category updated successfully!",
-        data: { category },
-      });
+    res.status(200).json({
+      status: 200,
+      message: "Category updated successfully!",
+      data: { category },
+    });
   } catch (error) {
     return next(error);
   }
