@@ -1,5 +1,5 @@
 const { validationResult } = require("express-validator");
-// const Service = require("../model/Service");
+const { BASE_URL } = require("../helper");
 const { Service, Vendor, Booking, Category } = require("../model");
 
 const faker = require("faker");
