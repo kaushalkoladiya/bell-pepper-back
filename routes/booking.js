@@ -6,7 +6,6 @@ const { AdminMiddleware } = require("../middleware");
 const router = express.Router();
 
 const storeValidation = [
-  body("vendorId").isAlphanumeric().withMessage("Invalid field Vendor ID"),
   body("serviceId").isAlphanumeric().withMessage("Invalid field Service ID"),
   body("userId").isAlphanumeric().withMessage("Invalid field Service ID"),
   body("description").notEmpty().withMessage("Invalid field Description"),

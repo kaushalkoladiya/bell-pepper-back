@@ -87,23 +87,41 @@ exports.store = async (req, res, next) => {
     }
 
     const vendorId = req.body.vendorId,
-      serviceId = req.body.serviceId;
+      serviceId = req.body.serviceId,
+      userId = req.body.userId;
 
-    const hasVendor = await Vendor.findById(vendorId);
-    if (!hasVendor) {
-      const err = new Error("Vendor not found");
+    const isServiceExist = await Service.findById(serviceId);
+    if (!isServiceExist) {
+      const err = new Error("Service not found");
       err.status = 404;
       throw err;
     }
 
-    const hasService = await Service.exists({ _id: serviceId, vendorId });
-    if (!hasService) {
-      const err = new Error(
-        "This Service is not belonging to specified Vendor!"
-      );
+    const isUserExist = await User.findById(userId);
+    if (!isUserExist) {
+      const err = new Error("User not found");
       err.status = 404;
       throw err;
     }
+
+    // const vendorId = req.body.vendorId,
+    //   serviceId = req.body.serviceId;
+
+    // const hasVendor = await Vendor.findById(vendorId);
+    // if (!hasVendor) {
+    //   const err = new Error("Vendor not found");
+    //   err.status = 404;
+    //   throw err;
+    // }
+
+    // const hasService = await Service.exists({ _id: serviceId, vendorId });
+    // if (!hasService) {
+    //   const err = new Error(
+    //     "This Service is not belonging to specified Vendor!"
+    //   );
+    //   err.status = 404;
+    //   throw err;
+    // }
 
     const booking = await Booking.create(req.body);
 
