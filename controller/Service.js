@@ -10,7 +10,7 @@ exports.index = async (req, res, next) => {
       .populate("categoryId")
       .sort({ createdAt: -1 });
 
-    console.log(services);
+    // console.log(services);
 
     return res.status(200).json({
       status: 200,
@@ -28,6 +28,25 @@ exports.indexByVendorId = async (req, res, next) => {
   try {
     const services = await Service.find({
       vendorId: req.params.vendorId,
+      deletedAt: null,
+    });
+
+    return res.status(200).json({
+      status: 200,
+      message: "Get all services successfully!",
+      data: {
+        services,
+      },
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+exports.indexByCategoryId = async (req, res, next) => {
+  try {
+    const services = await Service.find({
+      categoryId: req.params.categoryId,
       deletedAt: null,
     });
 

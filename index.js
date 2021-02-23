@@ -10,7 +10,11 @@ const {
   adminAuthRoutes,
 } = require("./routes/auth");
 
-const { v2DashboardRoutes } = require("./routes/v2");
+const {
+  v2DashboardRoutes,
+  v2ServiceRoutes,
+  v2BookingRoutes,
+} = require("./routes/v2");
 const {
   serviceRoutes,
   userRoutes,
@@ -62,7 +66,7 @@ app.use(bodyParser.json());
 
 // v2 (for End-User)
 app.use("/api", userAuthRoutes);
-app.use("/api/v2", v2DashboardRoutes);
+app.use("/api/v2", v2DashboardRoutes, v2ServiceRoutes, v2BookingRoutes);
 
 // v1 (for Admin)
 app.use("/api/admin", adminAuthRoutes);
