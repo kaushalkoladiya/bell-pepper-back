@@ -9,6 +9,8 @@ const {
   userAuthRoutes,
   adminAuthRoutes,
 } = require("./routes/auth");
+
+const { v2DashboardRoutes } = require("./routes/v2");
 const {
   serviceRoutes,
   userRoutes,
@@ -28,12 +30,15 @@ require("dotenv").config();
 const app = express();
 const CONNECTION_URL = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.vrnuc.mongodb.net/${process.env.DB_NAME}?authSource=admin&replicaSet=atlas-11imru-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true`;
 const PORT = process.env.PORT || 5000;
+
+// set headers
 app.use(
   cors({
     origin: "*",
     credentials: true,
   })
 );
+
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -45,14 +50,21 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+// allow folders access
 app.use(express.static(path.join(__dirname, "public", "build")));
 app.use("/storage", express.static(path.join(__dirname, "storage")));
 
+// body parsing
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// v2 (for End-User)
 app.use("/api", userAuthRoutes);
+app.use("/api/v2", v2DashboardRoutes);
+
+// v1 (for Admin)
 app.use("/api/admin", adminAuthRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin", dashboardRoutes);
