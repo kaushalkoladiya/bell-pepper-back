@@ -35,6 +35,6 @@ router.patch(
   ServiceController.update
 );
 
-router.delete("/:id", AdminMiddleware, ServiceController.destroy);
+router.delete("/:serviceId", AdminMiddleware, ServiceController.destroy);
 
 module.exports = router;

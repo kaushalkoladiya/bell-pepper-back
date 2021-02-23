@@ -10,6 +10,8 @@ exports.index = async (req, res, next) => {
       .populate("categoryId")
       .sort({ createdAt: -1 });
 
+    console.log(services);
+
     return res.status(200).json({
       status: 200,
       message: "Get all services successfully!",
@@ -24,7 +26,10 @@ exports.index = async (req, res, next) => {
 
 exports.indexByVendorId = async (req, res, next) => {
   try {
-    const services = await Service.find({ vendorId: req.params.vendorId });
+    const services = await Service.find({
+      vendorId: req.params.vendorId,
+      deletedAt: null,
+    });
 
     return res.status(200).json({
       status: 200,
@@ -146,7 +151,7 @@ exports.update = async (req, res, next) => {
 
 exports.destroy = async (req, res, next) => {
   try {
-    const service = await Service.findByIdAndUpdate(req.params.id, {
+    const service = await Service.findByIdAndUpdate(req.params.serviceId, {
       deletedAt: new Date().toISOString(),
     });
 
