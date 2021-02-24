@@ -65,15 +65,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // v2 (for End-User)
-app.use("/api", userAuthRoutes);
+app.use("/api/v2", userAuthRoutes);
 app.use("/api/v2", v2DashboardRoutes, v2ServiceRoutes, v2BookingRoutes);
+app.use("/api/v2/vendor", vendorAuthRoutes);
 
 // v1 (for Admin)
 app.use("/api/admin", adminAuthRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin", dashboardRoutes);
 app.use("/api/user", userRoutes);
-app.use("/api/vendor", vendorAuthRoutes);
 app.use("/api/vendor", vendorRoutes);
 app.use("/api/staff", staffRoutes);
 app.use("/api/service", serviceRoutes);

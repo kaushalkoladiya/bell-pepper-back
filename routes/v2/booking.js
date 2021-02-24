@@ -19,5 +19,6 @@ const storeValidation = [
 ];
 
 router.post("/booking", storeValidation, BookingController.store);
+router.get("/booking/user/:userId", BookingController.indexByUser);
 
 module.exports = router;
