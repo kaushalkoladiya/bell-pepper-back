@@ -61,6 +61,12 @@ exports.indexByUser = async (req, res, next) => {
   try {
     const bookings = await getFilteredBooking({ userId: req.params.userId });
 
+    console.log(
+      bookings.map((item) => {
+        return;
+      })
+    );
+
     return res.status(200).json({
       status: 200,
       message: "Get all bookings successfully!",
@@ -280,24 +286,26 @@ exports.removeStaff = async (req, res, next) => {
 };
 
 const getFilteredBooking = async (filter = {}) =>
-  await Booking.find(filter).populate([
-    {
-      path: "userId",
-      model: "User",
-    },
-    {
-      path: "vendorId",
-      model: "Vendor",
-    },
-    {
-      path: "serviceId",
-      model: "Service",
-    },
-    {
-      path: "profession",
-      model: "Staff",
-    },
-  ]);
+  await Booking.find(filter)
+    .sort({ createdAt: -1 })
+    .populate([
+      {
+        path: "userId",
+        model: "User",
+      },
+      {
+        path: "vendorId",
+        model: "Vendor",
+      },
+      {
+        path: "serviceId",
+        model: "Service",
+      },
+      {
+        path: "profession",
+        model: "Staff",
+      },
+    ]);
 
 exports.faker = async (req, res, next) => {
   try {
