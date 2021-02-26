@@ -142,4 +142,5 @@ const deleteFile = (path) => {
   if (fs.existsSync(path)) fs.unlinkSync(path);
 };
 
-const isCategoryExists = async (name) => await Category.exists({ name });
+const isCategoryExists = async (name) =>
+  await Category.exists({ name, deletedAt: null });

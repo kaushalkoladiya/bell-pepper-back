@@ -14,6 +14,7 @@ const {
   v2DashboardRoutes,
   v2ServiceRoutes,
   v2BookingRoutes,
+  v2CategoryRoutes,
 } = require("./routes/v2");
 const {
   serviceRoutes,
@@ -66,7 +67,13 @@ app.use(bodyParser.json());
 
 // v2 (for End-User)
 app.use("/api/v2", userAuthRoutes);
-app.use("/api/v2", v2DashboardRoutes, v2ServiceRoutes, v2BookingRoutes);
+app.use(
+  "/api/v2",
+  v2DashboardRoutes,
+  v2ServiceRoutes,
+  v2BookingRoutes,
+  v2CategoryRoutes
+);
 app.use("/api/v2/vendor", vendorAuthRoutes);
 
 // v1 (for Admin)
