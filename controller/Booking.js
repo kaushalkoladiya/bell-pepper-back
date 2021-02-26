@@ -59,13 +59,34 @@ exports.indexByService = async (req, res, next) => {
 
 exports.indexByUser = async (req, res, next) => {
   try {
-    const bookings = await getFilteredBooking({ userId: req.params.userId });
+    const _bookings = await getFilteredBooking({ userId: req.params.userId });
 
-    console.log(
-      bookings.map((item) => {
-        return;
-      })
-    );
+    const bookings = _bookings.map((item) => {
+      let status = "Not assigned | Pending";
+      if (item.isDone) status = "Completed";
+      if (item.profession) status = "Assigned";
+      return {
+        serviceName: item.serviceId.title,
+        frequency: item.frequency,
+        startDate: item.date,
+        startTime: item.time,
+        numberOfProfessions: item.howManyProfessions,
+        staffDetails: {
+          name: item.profession ? item.profession.name : null,
+          about: item.profession ? item.profession.about : null,
+          email: item.profession ? item.profession.email : null,
+          mobile: item.profession ? item.profession.mobile : null,
+          image: item.profession ? item.profession.image : null,
+          gender: item.profession ? item.profession.gender : null,
+          age: item.profession ? item.profession.age : null,
+          nationality: item.profession ? item.profession.nationality : null,
+        },
+        isCancelled: item.isCancelled,
+        isFinished: item.isDone,
+        status,
+        createdAt: item.createdAt,
+      };
+    });
 
     return res.status(200).json({
       status: 200,
