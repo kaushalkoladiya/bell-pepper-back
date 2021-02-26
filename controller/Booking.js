@@ -70,6 +70,9 @@ exports.indexByUser = async (req, res, next) => {
         frequency: item.frequency,
         startDate: item.date,
         startTime: item.time,
+        howManyHours: item.howManyHours,
+        instructions: item.description,
+        isMaterialRequired: item.isMaterialRequired,
         numberOfProfessions: item.howManyProfessions,
         staffDetails: {
           name: item.profession ? item.profession.name : null,
