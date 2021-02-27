@@ -1,11 +1,14 @@
-const { Vendor } = require("../model");
+const { Video } = require("../model");
 
 module.exports = async (req, res, next) => {
   try {
-    const isExist = await Vendor.exists({ _id: req.vendorId, deletedAt: null });
+    const isExist = await Video.exists({
+      _id: req.videoId,
+      deletedAt: null,
+    });
 
     if (!isExist) {
-      const err = new Error("Vendor not found!");
+      const err = new Error("Video not found!");
       err.status = 404;
       throw err;
     }

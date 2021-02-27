@@ -1,11 +1,11 @@
-const { Vendor } = require("../model");
+const { Banner } = require("../model");
 
 module.exports = async (req, res, next) => {
   try {
-    const isExist = await Vendor.exists({ _id: req.vendorId, deletedAt: null });
+    const isExist = await Banner.exists({ _id: req.bannerId, deletedAt: null });
 
     if (!isExist) {
-      const err = new Error("Vendor not found!");
+      const err = new Error("Banner not found!");
       err.status = 404;
       throw err;
     }

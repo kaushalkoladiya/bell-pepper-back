@@ -1,7 +1,11 @@
 const express = require("express");
 const { body } = require("express-validator");
 const { BookingController } = require("../controller");
-const { AdminMiddleware } = require("../middleware");
+const {
+  AdminMiddleware,
+  ServiceMiddleware,
+  UserMiddleware,
+} = require("../middleware");
 
 const router = express.Router();
 
@@ -33,7 +37,13 @@ router.get("/", AdminMiddleware, BookingController.index);
 router.get("/vendor/:vendorId", BookingController.indexByVendor);
 router.get("/service/:serviceId", BookingController.indexByService);
 router.get("/user/:userId", BookingController.indexByUser);
-router.post("/", storeValidation, BookingController.store);
+router.post(
+  "/",
+  ServiceMiddleware,
+  UserMiddleware,
+  storeValidation,
+  BookingController.store
+);
 router.put(
   "/assignStaff",
   assignStaffValidation,
@@ -47,4 +57,5 @@ router.put(
 router.put("/removeStaff", BookingController.removeStaff);
 router.get("/faker", BookingController.faker);
 router.delete("/:id", BookingController.destroy);
+
 module.exports = router;
