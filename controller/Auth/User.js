@@ -94,7 +94,7 @@ exports.login = async (req, res, next) => {
   }
 };
 
-exports.isMobileNoExists = async (req, res, next) => {
+exports.otp = async (req, res, next) => {
   try {
     const isMobileNoExists = await User.exists({ mobile: req.body.mobile });
 

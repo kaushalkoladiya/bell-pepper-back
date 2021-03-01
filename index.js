@@ -66,9 +66,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // v2 (for End-User)
-app.use("/api/v2", userAuthRoutes);
 app.use(
   "/api/v2",
+  userAuthRoutes,
   v2DashboardRoutes,
   v2ServiceRoutes,
   v2BookingRoutes,

@@ -1,5 +1,5 @@
 const express = require("express");
-const { body, query } = require("express-validator");
+const { body } = require("express-validator");
 const { UserAuthController } = require("../../controller/Auth");
 
 const router = express.Router();
@@ -15,18 +15,14 @@ const loginValidation = [
   body("mobile").isNumeric().withMessage("Wrong mobile number"),
 ];
 
-const isMobileNoExistsValidation = [
-  query("mobile")
+const otpValidation = [
+  body("mobile")
     .isNumeric()
     .withMessage("Mobile number is required in query parameter."),
 ];
 
 router.post("/signup", signupValidation, UserAuthController.signup);
 router.post("/login", loginValidation, UserAuthController.login);
-router.get(
-  "/isMobileNoExists",
-  isMobileNoExistsValidation,
-  UserAuthController.isMobileNoExists
-);
+router.post("/otp", otpValidation, UserAuthController.otp);
 
 module.exports = router;
