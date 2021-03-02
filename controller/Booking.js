@@ -355,6 +355,7 @@ exports.faker = async (req, res, next) => {
         howManyProfessions: faker.random.number(5),
         date: faker.date.past(),
         time: faker.date.past(),
+        createdAt: faker.date.past(),
       });
     }
     await Booking.insertMany(bookingArray);

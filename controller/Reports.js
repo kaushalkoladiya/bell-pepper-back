@@ -44,6 +44,34 @@ exports.dailyBooking = async (req, res, next) => {
 
 exports.customer = async (req, res, next) => {
   try {
+    const data = await aggregate(User, req);
+
+    return res.status(200).json({
+      status: 200,
+      message: "Got customers analytic successfully!",
+      data: { customers: data },
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+exports.booking = async (req, res, next) => {
+  try {
+    const data = await aggregate(Booking, req);
+
+    return res.status(200).json({
+      status: 200,
+      message: "Get bookings analytic successfully!",
+      data: { bookings: data },
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const aggregate = async (Model, req) => {
+  try {
     const reqObj = req.body;
     const match = {
       $match: {
@@ -66,8 +94,7 @@ exports.customer = async (req, res, next) => {
 
     const sort = { $sort: { "_id.year": 1, "_id.month": 1 } };
 
-    const customersAnalytics = await User.aggregate([match, group, sort]);
-    // const bookingAnalytics = await Booking.aggregate([match, group, sort]);
+    const analytics = await Model.aggregate([match, group, sort]);
 
     const month = [
       "Jan",
@@ -84,27 +111,16 @@ exports.customer = async (req, res, next) => {
       "Dec",
     ];
 
-    const customers = customersAnalytics.map((item) => ({
+    const data = analytics.map((item) => ({
       month: month[item._id.month - 1],
       year: item._id.year,
       count: item.count,
       date: `${month[item._id.month - 1]}, ${item._id.year}`,
     }));
 
-    // const bookings = bookingAnalytics.map((item) => ({
-    //   month: month[item._id.month - 1],
-    //   year: item._id.year,
-    //   count: item.count,
-    //   date: `${month[item._id.month - 1]}, ${item._id.year}`,
-    // }));
-
-    return res.status(200).json({
-      status: 200,
-      message: "Get customers analytic successfully!",
-      data: { customers },
-    });
+    return data;
   } catch (error) {
-    return next(error);
+    console.log(error);
   }
 };
 

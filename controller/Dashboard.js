@@ -1,13 +1,27 @@
-const { Booking, Service, Staff, User, Vendor } = require("../model");
+const {
+  Booking,
+  Service,
+  Staff,
+  User,
+  Vendor,
+  Banner,
+  Category,
+  Tutorial,
+  Video,
+} = require("../model");
 
 exports.counts = async (req, res, next) => {
   try {
     let data = {
+      showBanners: false,
       showBookings: false,
+      showCategories: false,
       showServices: false,
       showStaffs: false,
+      showTutorials: false,
       showUsers: false,
       showVendors: false,
+      showVideos: false,
     };
     if (req.userType === "ROOT_USER") {
       const bookings = await Booking.countDocuments();
@@ -15,8 +29,20 @@ exports.counts = async (req, res, next) => {
       const staffs = await Staff.countDocuments();
       const users = await User.countDocuments();
       const vendors = await Vendor.countDocuments();
+      const banners = await Banner.countDocuments();
+      const categories = await Category.countDocuments();
+      const tutorials = await Tutorial.countDocuments();
+      const videos = await Video.countDocuments();
 
       data = {
+        showBanners: true,
+        banners,
+        showCategories: true,
+        categories,
+        showTutorials: true,
+        tutorials,
+        showVideos: true,
+        videos,
         showBookings: true,
         bookings,
         showServices: true,
