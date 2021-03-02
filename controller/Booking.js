@@ -62,7 +62,7 @@ exports.indexByUser = async (req, res, next) => {
     const _bookings = await getFilteredBooking({ userId: req.params.userId });
 
     const bookings = _bookings.map((item) => {
-      let status = "Not assigned | Pending";
+      let status = "Pending";
       if (item.isDone) status = "Completed";
       if (item.profession) status = "Assigned";
       return {
