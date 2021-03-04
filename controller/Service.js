@@ -217,6 +217,7 @@ exports.show = async (req, res, next) => {
     const service = await Service.findById(req.params.serviceId);
     const _feedbacks = await Feedback.find({
       serviceId: req.params.serviceId,
+      deletedAt: null,
     }).populate("userId");
 
     const feedbacks = _feedbacks.map((item) => ({
