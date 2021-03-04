@@ -27,6 +27,7 @@ exports.faker = async (req, res, next) => {
         email: faker.internet.email(),
         gender: faker.name.prefix(),
         dob: faker.date.past(),
+        image: faker.image.avatar(),
         location: faker.address.country(),
         lat: faker.address.latitude(),
         lon: faker.address.longitude(),

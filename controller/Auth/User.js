@@ -4,6 +4,7 @@ const { generateJWTToken } = require("../../helper");
 const { User } = require("../../model");
 const { otp } = require("../../helper");
 const { CUSTOMER_USER } = require("../../constant");
+const faker = require("faker");
 
 exports.signup = async (req, res, next) => {
   try {
@@ -27,7 +28,10 @@ exports.signup = async (req, res, next) => {
       throw err;
     }
 
-    const user = await User.create(req.body);
+    const user = await User.create({
+      ...req.body,
+      image: faker.image.avatar(),
+    });
     // generate token
     const payload = {
       userType: CUSTOMER_USER,
