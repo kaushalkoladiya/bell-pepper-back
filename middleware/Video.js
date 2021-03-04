@@ -3,7 +3,7 @@ const { Video } = require("../model");
 module.exports = async (req, res, next) => {
   try {
     const isExist = await Video.exists({
-      _id: req.videoId,
+      _id: req.body.videoId,
       deletedAt: null,
     });
 

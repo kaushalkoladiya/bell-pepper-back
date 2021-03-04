@@ -3,7 +3,7 @@ const { Booking } = require("../model");
 module.exports = async (req, res, next) => {
   try {
     const isExist = await Booking.exists({
-      _id: req.bookingId,
+      _id: req.body.bookingId,
       deletedAt: null,
     });
 

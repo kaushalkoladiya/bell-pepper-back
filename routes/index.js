@@ -10,3 +10,5 @@ exports.reportsRoutes = require("./reports");
 exports.bannerRoutes = require("./banner");
 exports.videoRoutes = require("./video");
 exports.tutorialRoutes = require("./tutorial");
+exports.reviewRoutes = require("./review");
+exports.feedbackRoutes = require("./feedback");

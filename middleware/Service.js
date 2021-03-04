@@ -3,7 +3,7 @@ const { Service } = require("../model");
 module.exports = async (req, res, next) => {
   try {
     const isExist = await Service.exists({
-      _id: req.serviceId,
+      _id: req.body.serviceId,
       deletedAt: null,
     });
 

@@ -1,6 +1,7 @@
 exports.AdminMiddleware = require("./Admin");
 exports.VendorMiddleware = require("./Vendor");
 exports.BannerMiddleware = require("./Banner");
+exports.BookingMiddleware = require("./Booking");
 exports.CategoryMiddleware = require("./Category");
 exports.ServiceMiddleware = require("./Service");
 exports.StaffMiddleware = require("./Staff");

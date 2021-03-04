@@ -3,7 +3,7 @@ const { Tutorial } = require("../model");
 module.exports = async (req, res, next) => {
   try {
     const isExist = await Tutorial.exists({
-      _id: req.tutorialId,
+      _id: req.body.tutorialId,
       deletedAt: null,
     });
 

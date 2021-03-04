@@ -10,3 +10,5 @@ exports.ReportsController = require("./Reports");
 exports.BannerController = require("./Banner");
 exports.VideoController = require("./Video");
 exports.TutorialController = require("./Tutorial");
+exports.ReviewController = require("./Review");
+exports.FeedbackController = require("./Feedback");

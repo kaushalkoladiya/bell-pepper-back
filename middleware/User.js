@@ -3,7 +3,7 @@ const { User } = require("../model");
 module.exports = async (req, res, next) => {
   try {
     const isExist = await User.exists({
-      _id: req.userId,
+      _id: req.body.userId,
       deletedAt: null,
     });
 

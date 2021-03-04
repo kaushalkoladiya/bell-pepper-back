@@ -8,3 +8,5 @@ exports.Category = require("./Category");
 exports.Banner = require("./Banner");
 exports.Tutorial = require("./Tutorial");
 exports.Video = require("./Video");
+exports.Feedback = require("./Feedback");
+exports.Review = require("./Review");

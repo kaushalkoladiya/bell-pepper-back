@@ -3,7 +3,7 @@ const { Category } = require("../model");
 module.exports = async (req, res, next) => {
   try {
     const isExist = await Category.exists({
-      _id: req.categoryId,
+      _id: req.body.categoryId,
       deletedAt: null,
     });
 
