@@ -17,6 +17,11 @@ router.post(
   ServiceMiddleware,
   UserMiddleware,
   [
+    body("star")
+      .isNumeric()
+      .notEmpty()
+      .bail()
+      .withMessage("Invalid feedback description!"),
     body("description")
       .notEmpty()
       .bail()

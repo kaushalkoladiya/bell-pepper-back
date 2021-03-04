@@ -17,6 +17,7 @@ exports.store = async (req, res, next) => {
       serviceId: req.body.serviceId,
       userId: req.body.userId,
       description: req.body.description,
+      star: req.body.star,
     });
 
     return res.status(200).json({

@@ -23,6 +23,7 @@ const feedbackSchema = new Schema(
       required: true,
     },
     description: { type: String, default: null },
+    star: { type: Number, default: 0 },
     deletedAt: { type: Date, default: null },
   },
   {

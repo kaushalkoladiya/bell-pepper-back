@@ -1,6 +1,6 @@
 const { validationResult } = require("express-validator");
 const { BASE_URL } = require("../helper");
-const { Service, Vendor, Booking, Category } = require("../model");
+const { Service, Vendor, Booking, Category, Feedback } = require("../model");
 
 const faker = require("faker");
 
@@ -206,6 +206,34 @@ exports.faker = async (req, res, next) => {
       status: 200,
       message: "Currently service will not be inserted.",
       data: { Services: serviceArray },
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+exports.show = async (req, res, next) => {
+  try {
+    const service = await Service.findById(req.params.serviceId);
+    const _feedbacks = await Feedback.find({
+      serviceId: req.params.serviceId,
+    }).populate("userId");
+
+    const feedbacks = _feedbacks.map((item) => ({
+      description: item.description,
+      star: item.star || 0,
+      createdAt: item.createdAt,
+      userData: {
+        name: item.userId.name,
+        location: item.userId.location,
+        image: faker.image.avatar(),
+      },
+    }));
+
+    return res.status(200).json({
+      status: 200,
+      message: "Service deleted successfully!",
+      data: { serviceData: service, feedbacks },
     });
   } catch (error) {
     return next(error);
