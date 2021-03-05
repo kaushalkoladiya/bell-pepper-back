@@ -24,15 +24,15 @@ exports.counts = async (req, res, next) => {
       showVideos: false,
     };
     if (req.userType === "ROOT_USER") {
-      const bookings = await Booking.countDocuments();
-      const services = await Service.countDocuments();
-      const staffs = await Staff.countDocuments();
-      const users = await User.countDocuments();
-      const vendors = await Vendor.countDocuments();
-      const banners = await Banner.countDocuments();
-      const categories = await Category.countDocuments();
-      const tutorials = await Tutorial.countDocuments();
-      const videos = await Video.countDocuments();
+      const bookings = (await Booking.find({ deletedAt: null })).length;
+      const services = (await Service.find({ deletedAt: null })).length;
+      const staffs = (await Staff.find({ deletedAt: null })).length;
+      const users = (await User.find({ deletedAt: null })).length;
+      const vendors = (await Vendor.find({ deletedAt: null })).length;
+      const banners = (await Banner.find({ deletedAt: null })).length;
+      const categories = (await Category.find({ deletedAt: null })).length;
+      const tutorials = (await Tutorial.find({ deletedAt: null })).length;
+      const videos = (await Video.find({ deletedAt: null })).length;
 
       data = {
         showBanners: true,
