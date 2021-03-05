@@ -88,6 +88,7 @@ exports.store = async (req, res, next) => {
       err.status = 422;
       throw err;
     } else if (!req.file || !req.file.path) {
+      console.log(req.file);
       const err = new Error("Validation Error (Image Required)");
       err.status = 422;
       throw err;
@@ -99,6 +100,11 @@ exports.store = async (req, res, next) => {
       title: req.body.title,
       description: req.body.description,
       image: BASE_URL + req.file.path,
+      discount: req.body.discount,
+      packageInclude: req.body.packageInclude,
+      brandUsed: req.body.brandUsed,
+      suitable: req.body.suitable,
+      certification: req.body.certification,
     });
 
     return res.status(200).json({
@@ -137,6 +143,11 @@ exports.update = async (req, res, next) => {
       title: req.body.title,
       description: req.body.description,
       categoryId: req.body.categoryId,
+      discount: req.body.discount,
+      packageInclude: req.body.packageInclude,
+      brandUsed: req.body.brandUsed,
+      suitable: req.body.suitable,
+      certification: req.body.certification,
     };
 
     if (req.file) {

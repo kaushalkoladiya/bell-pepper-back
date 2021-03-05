@@ -14,6 +14,12 @@ const serviceSchema = new Schema(
     description: { type: String, default: null },
     image: { type: String, default: null },
     deletedAt: { type: Date, default: null },
+    discount: { type: String, default: null },
+    packageInclude: { type: String, default: null },
+    brandUsed: { type: String, default: null },
+    suitable: { type: String, default: null },
+    certification: { type: String, default: null },
+    coverImage: [{ type: String, default: null }],
   },
   {
     timestamps: true,
