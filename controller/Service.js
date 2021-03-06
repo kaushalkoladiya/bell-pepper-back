@@ -244,8 +244,35 @@ exports.show = async (req, res, next) => {
 
     return res.status(200).json({
       status: 200,
-      message: "Service deleted successfully!",
+      message: "Service get successfully!",
       data: { serviceData: service, feedbacks },
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+exports.storeCoverImages = async (req, res, next) => {
+  try {
+    const service = await Service.findById(req.params.serverId);
+
+    if (!service) {
+      const err = new Error("Service not found!");
+      err.status = 404;
+      throw err;
+    }
+
+    const _coverImage = req.files.map((item) => BASE_URL + item.path);
+
+    const coverImage = [...service.coverImage, ..._coverImage];
+
+    service.coverImage = coverImage;
+    await service.save();
+
+    return res.status(200).json({
+      status: 200,
+      message: "Cover image stored successfully!",
+      data: { service },
     });
   } catch (error) {
     return next(error);

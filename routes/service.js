@@ -1,7 +1,7 @@
 const express = require("express");
 const { body } = require("express-validator");
 const { ServiceController } = require("../controller");
-const { AdminMiddleware } = require("../middleware");
+const { AdminMiddleware, ServiceMiddleware } = require("../middleware");
 const multer = require("../helper/multer");
 
 const router = express.Router();
@@ -32,6 +32,13 @@ router.patch(
   multer.single("image"),
   storeValidation,
   ServiceController.update
+);
+
+router.post(
+  "/coverImage/:serverId",
+  AdminMiddleware,
+  multer.array("image"),
+  ServiceController.storeCoverImages
 );
 
 router.delete("/:serviceId", AdminMiddleware, ServiceController.destroy);
