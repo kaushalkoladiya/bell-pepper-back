@@ -15,12 +15,13 @@ router.post(
 );
 
 router.patch(
-  "/:category_id",
+  "/:categoryId",
   multer.single("image"),
   [body("name").not().trim().notEmpty().bail()],
   CategoryController.update
 );
 
-router.delete("/:category_id", CategoryController.destroy);
+router.delete("/:categoryId", CategoryController.destroy);
+router.put("/toggleShow/:categoryId", CategoryController.toggleShow);
 
 module.exports = router;

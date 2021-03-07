@@ -278,3 +278,25 @@ exports.storeCoverImages = async (req, res, next) => {
     return next(error);
   }
 };
+
+exports.toggleShow = async (req, res, next) => {
+  try {
+    const service = await Service.findById(req.params.serviceId);
+    if (!service) {
+      const err = new Error("Service not found");
+      err.status = 404;
+      throw err;
+    }
+
+    service.show = !service.show;
+    await service.save();
+
+    return res.status(200).json({
+      status: 200,
+      message: "Change visibility successfully!",
+      data: { service },
+    });
+  } catch (error) {
+    return next(error);
+  }
+};

@@ -60,7 +60,7 @@ exports.store = async (req, res, next) => {
 exports.update = async (req, res, next) => {
   try {
     // Check Post is Exist or not
-    let category = await Category.findById(req.params.category_id);
+    let category = await Category.findById(req.params.categoryId);
     if (!category) {
       deleteReqFile(req);
       const err = new Error("Not found");
@@ -110,7 +110,7 @@ exports.update = async (req, res, next) => {
 exports.destroy = async (req, res, next) => {
   try {
     // Check Post is Exist or not
-    const category = await Category.findByIdAndUpdate(req.params.category_id, {
+    const category = await Category.findByIdAndUpdate(req.params.categoryId, {
       deletedAt: new Date().toISOString(),
     });
     // if (!category) {
@@ -144,3 +144,25 @@ const deleteFile = (path) => {
 
 const isCategoryExists = async (name) =>
   await Category.exists({ name, deletedAt: null });
+
+exports.toggleShow = async (req, res, next) => {
+  try {
+    const category = await Category.findById(req.params.categoryId);
+    if (!category) {
+      const err = new Error("Category not found");
+      err.status = 404;
+      throw err;
+    }
+
+    category.show = !category.show;
+    await category.save();
+
+    return res.status(200).json({
+      status: 200,
+      message: "Change visibility successfully!",
+      data: { category },
+    });
+  } catch (error) {
+    return next(error);
+  }
+};

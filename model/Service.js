@@ -20,6 +20,11 @@ const serviceSchema = new Schema(
     suitable: { type: String, default: null },
     certification: { type: String, default: null },
     coverImage: [{ type: String, default: null }],
+    show: {
+      type: Boolean,
+      default: true,
+      required: true,
+    },
   },
   {
     timestamps: true,

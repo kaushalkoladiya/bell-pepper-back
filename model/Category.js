@@ -19,6 +19,11 @@ const categorySchema = new Schema(
       default: false,
       required: true,
     },
+    show: {
+      type: Boolean,
+      default: true,
+      required: true,
+    },
     deletedAt: { type: Date, default: null },
   },
   {

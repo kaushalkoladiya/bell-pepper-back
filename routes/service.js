@@ -42,5 +42,5 @@ router.post(
 );
 
 router.delete("/:serviceId", AdminMiddleware, ServiceController.destroy);
-
+router.put("/toggleShow/:serviceId", ServiceController.toggleShow);
 module.exports = router;
