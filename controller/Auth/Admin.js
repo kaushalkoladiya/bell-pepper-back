@@ -26,6 +26,7 @@ exports.login = async (req, res, next) => {
         name: vendor.companyName,
         email: vendor.email,
         userType: "VENDOR_USER",
+        hasPermission: admin.hasPermission,
       };
       userType = "VENDOR_USER";
 
@@ -36,6 +37,7 @@ exports.login = async (req, res, next) => {
         name: admin.name,
         email: admin.email,
         userType: "ROOT_USER",
+        hasPermission: admin.hasPermission,
       };
       userType = "ROOT_USER";
     }

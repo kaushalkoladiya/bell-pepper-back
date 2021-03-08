@@ -43,6 +43,11 @@ const vendorSchema = new Schema(
       type: String,
       default: null,
     },
+    hasPermission: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
   {
     timestamps: true,

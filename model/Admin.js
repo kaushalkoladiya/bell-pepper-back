@@ -18,6 +18,11 @@ const adminSchema = new Schema(
       type: String,
       required: true,
     },
+    hasPermission: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
   {
     timestamps: true,
