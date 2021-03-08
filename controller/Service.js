@@ -264,9 +264,7 @@ exports.storeCoverImages = async (req, res, next) => {
 
     const _coverImage = req.files.map((item) => BASE_URL + item.path);
 
-    const coverImage = [...service.coverImage, ..._coverImage];
-
-    service.coverImage = coverImage;
+    service.coverImage = [...service.coverImage, ..._coverImage];
     await service.save();
 
     return res.status(200).json({
