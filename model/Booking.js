@@ -19,9 +19,14 @@ const bookingSchema = new Schema(
       type: Schema.Types.ObjectId,
       default: null,
     },
+    staffId: {
+      type: Schema.Types.Object,
+      default: null,
+      ref: "Staff",
+    },
     description: {
       type: String,
-      required: true,
+      required: false,
       default: null,
     },
     isMaterialRequired: {
@@ -31,28 +36,28 @@ const bookingSchema = new Schema(
     },
     frequency: {
       type: String,
-      required: true,
-      default: "one time",
+      required: false,
+      default: null,
     },
     howManyHours: {
       type: Number,
       default: null,
-      required: true,
+      required: false,
     },
     howManyProfessions: {
       type: Number,
       default: null,
-      required: true,
+      required: false,
     },
     date: {
       type: String,
       default: null,
-      required: true,
+      required: false,
     },
     time: {
       type: String,
       default: null,
-      required: true,
+      required: false,
     },
     profession: {
       type: Schema.Types.Object,
@@ -67,12 +72,12 @@ const bookingSchema = new Schema(
     },
     isCancelled: {
       type: Boolean,
-      required: true,
-      default: false,
+      required: false,
+      default: null,
     },
     cancelledByWhom: {
       type: String,
-      require: true,
+      require: false,
       default: null,
     },
     isDone: {

@@ -118,7 +118,8 @@ exports.store = async (req, res, next) => {
 
     const vendorId = req.body.vendorId,
       serviceId = req.body.serviceId,
-      userId = req.body.userId;
+      userId = req.body.userId,
+      staffId = req.body.staffId;
 
     const isServiceExist = await Service.findById(serviceId);
     if (!isServiceExist) {
@@ -134,6 +135,30 @@ exports.store = async (req, res, next) => {
       throw err;
     }
 
+    let bookingData = {
+      serviceId: req.body.serviceId,
+      userId: req.body.userId,
+      description: req.body.description,
+      isMaterialRequired: req.body.isMaterialRequired,
+      frequency: req.body.frequency,
+      howManyHours: req.body.howManyHours,
+      howManyProfessions: req.body.howManyProfessions,
+      date: req.body.date,
+      time: req.body.time,
+    };
+
+    if (staffId) {
+      const staff = await Staff.findById(staffId);
+      if (!staff) {
+        const err = new Error("Staff not found");
+        err.status = 404;
+        throw err;
+      }
+
+      bookingData.staffId = staff._id;
+      bookingData.profession = staff._id;
+      bookingData.vendorId = staff.vendorId;
+    }
     // const vendorId = req.body.vendorId,
     //   serviceId = req.body.serviceId;
 
@@ -153,7 +178,7 @@ exports.store = async (req, res, next) => {
     //   throw err;
     // }
 
-    const booking = await Booking.create(req.body);
+    const booking = await Booking.create(bookingData);
 
     return res.status(200).json({
       status: 200,
