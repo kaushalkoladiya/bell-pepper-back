@@ -17,6 +17,7 @@ const {
   v2CategoryRoutes,
   v2ReviewRoutes,
   v2FeedbackRoutes,
+  v2StaffRoutes,
 } = require("./routes/v2");
 const {
   serviceRoutes,
@@ -78,7 +79,8 @@ app.use(
   v2BookingRoutes,
   v2CategoryRoutes,
   v2ReviewRoutes,
-  v2FeedbackRoutes
+  v2FeedbackRoutes,
+  v2StaffRoutes
 );
 app.use("/api/v2/vendor", vendorAuthRoutes);
 

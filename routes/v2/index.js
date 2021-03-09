@@ -4,3 +4,4 @@ exports.v2BookingRoutes = require("./booking");
 exports.v2CategoryRoutes = require("./category");
 exports.v2ReviewRoutes = require("./review");
 exports.v2FeedbackRoutes = require("./feedback");
+exports.v2StaffRoutes = require("./staff");

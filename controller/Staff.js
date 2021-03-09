@@ -41,6 +41,53 @@ exports.indexByVendor = async (req, res, next) => {
   }
 };
 
+exports.indexByCategory = async (req, res, next) => {
+  try {
+    const vendorArray = await Vendor.find({
+      categoryId: req.params.categoryId,
+    }).select("_id");
+
+    const vendorIdArray = vendorArray.map((item) => item._id);
+
+    const _staffs = await Staff.find({ vendorId: { $in: vendorIdArray } });
+
+    const staffs = _staffs.map(
+      ({
+        _id,
+        name,
+        about,
+        email,
+        mobile,
+        image,
+        gender,
+        age,
+        nationality,
+        createdAt: joinedOn,
+      }) => ({
+        _id,
+        name,
+        about,
+        email,
+        mobile,
+        image,
+        gender,
+        age,
+        nationality,
+        joinedOn,
+      })
+    );
+
+    return res.status(200).json({
+      status: 200,
+      message: "Get all staffs successfully!",
+      data: { staffs },
+    });
+  } catch (error) {
+    console.error(error);
+    return next(error);
+  }
+};
+
 exports.store = async (req, res, next) => {
   try {
     const validatedData = validationResult(req);
