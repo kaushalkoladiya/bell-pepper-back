@@ -69,7 +69,7 @@ exports.indexByCategory = async (req, res, next) => {
         about,
         email,
         mobile,
-        image: faker.image.avatar(),
+        image,
         gender,
         age,
         nationality,
