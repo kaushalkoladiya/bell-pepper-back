@@ -8,19 +8,7 @@ exports.dashboard = async (req, res, next) => {
     const bestOffers = await Service.find({ deletedAt: null, show: true });
 
     const _laundry = await Service.findById("60508ad613dc86244ce24eed");
-
-    // const details = [
-    //   ...laundry.details,
-    //   ...new Array(5).fill("0").map((_) => ({
-    //     name: faker.random.words(3),
-    //     description: faker.random.words(30),
-    //     price: faker.random.number(100),
-    //   })),
-    // ];
-
-    // laundry.details = details;
-
-    // await laundry.save();
+    const _homeCleaning = await Service.findById("6049dce343403255a5eaeee8");
 
     const laundry = {
       title: _laundry.title,
@@ -35,6 +23,22 @@ exports.dashboard = async (req, res, next) => {
       details: _laundry.details,
     };
 
+    const homeCleaning = {
+      title: _homeCleaning.title,
+      image: _homeCleaning.image,
+      description: _homeCleaning.description,
+      price: _homeCleaning.price,
+      discount: _homeCleaning.discount,
+      coverImage: _homeCleaning.coverImage,
+      _id: _homeCleaning._id,
+      categoryId: _homeCleaning.categoryId,
+      createdAt: _homeCleaning.createdAt,
+      details: _homeCleaning.details,
+      frequencies: _homeCleaning.frequencies,
+      hours: _homeCleaning.hours,
+      staffs: _homeCleaning.staffs,
+    };
+
     return res.status(200).json({
       status: 200,
       message: "Get dashboard data",
@@ -46,6 +50,7 @@ exports.dashboard = async (req, res, next) => {
         mainServices,
         bestOffers,
         laundry,
+        homeCleaning,
       },
     });
   } catch (error) {
