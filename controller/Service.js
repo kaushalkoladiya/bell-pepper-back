@@ -101,10 +101,10 @@ exports.store = async (req, res, next) => {
       description: req.body.description,
       image: BASE_URL + req.file.path,
       discount: req.body.discount,
-      packageInclude: req.body.packageInclude,
-      brandUsed: req.body.brandUsed,
-      suitable: req.body.suitable,
-      certification: req.body.certification,
+      details: JSON.parse(req.body.details),
+      hours: JSON.parse(req.body.hours),
+      staffs: JSON.parse(req.body.staffs),
+      frequencies: JSON.parse(req.body.frequencies),
     });
 
     return res.status(200).json({
@@ -139,15 +139,15 @@ exports.update = async (req, res, next) => {
     }
 
     const updatedService = {
+      categoryId: req.body.categoryId,
       price: req.body.price,
       title: req.body.title,
       description: req.body.description,
-      categoryId: req.body.categoryId,
       discount: req.body.discount,
-      packageInclude: req.body.packageInclude,
-      brandUsed: req.body.brandUsed,
-      suitable: req.body.suitable,
-      certification: req.body.certification,
+      details: JSON.parse(req.body.details),
+      hours: JSON.parse(req.body.hours),
+      staffs: JSON.parse(req.body.staffs),
+      frequencies: JSON.parse(req.body.frequencies),
     };
 
     if (req.file) {
@@ -271,6 +271,31 @@ exports.storeCoverImages = async (req, res, next) => {
       status: 200,
       message: "Cover image stored successfully!",
       data: { service },
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+exports.deleteCoverImage = async (req, res, next) => {
+  try {
+    const service = await Service.findById(req.params.serverId);
+
+    if (!service) {
+      const err = new Error("Service not found!");
+      err.status = 404;
+      throw err;
+    }
+
+    const _coverImages = service.coverImage.filter((_, key) =>
+      Number(req.params.index) === Number(key) ? false : true
+    );
+    service.coverImage = _coverImages;
+
+    return res.status(200).json({
+      status: 200,
+      message: "Cover image deleted successfully!",
+      data: { service, _coverImages },
     });
   } catch (error) {
     return next(error);

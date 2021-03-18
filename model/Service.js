@@ -11,13 +11,7 @@ const serviceSchema = new Schema(
     },
     title: { type: String, default: null },
     image: { type: String, default: null },
-    descriptions: {
-      detail: { type: String, default: null },
-      packageInclude: { type: String, default: null },
-      brandUsed: { type: String, default: null },
-      suitable: { type: String, default: null },
-      certification: { type: String, default: null },
-    },
+    description: { type: String, default: null },
     price: { type: String, default: null },
     discount: { type: String, default: null },
     coverImage: [{ type: String, default: null }],
@@ -30,6 +24,24 @@ const serviceSchema = new Schema(
       {
         name: String,
         description: String,
+        price: { type: Number, default: null },
+      },
+    ],
+    frequencies: [
+      {
+        name: String,
+        price: { type: Number, default: null },
+      },
+    ],
+    hours: [
+      {
+        number: String,
+        price: { type: Number, default: null },
+      },
+    ],
+    staffs: [
+      {
+        number: String,
         price: { type: Number, default: null },
       },
     ],

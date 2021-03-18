@@ -13,11 +13,8 @@ const storeValidation = [
 ];
 
 router.get("/faker", ServiceController.faker);
-
 router.get("/", AdminMiddleware, ServiceController.index);
-
 router.get("/:vendorId", ServiceController.indexByVendorId);
-
 router.post(
   "/",
   AdminMiddleware,
@@ -25,7 +22,6 @@ router.post(
   storeValidation,
   ServiceController.store
 );
-
 router.patch(
   "/:id",
   AdminMiddleware,
@@ -33,14 +29,18 @@ router.patch(
   storeValidation,
   ServiceController.update
 );
-
 router.post(
   "/coverImage/:serverId",
   AdminMiddleware,
   multer.array("image"),
   ServiceController.storeCoverImages
 );
-
+router.put(
+  "/coverImage/:serverId/index/:index",
+  AdminMiddleware,
+  ServiceController.deleteCoverImage
+);
 router.delete("/:serviceId", AdminMiddleware, ServiceController.destroy);
 router.put("/toggleShow/:serviceId", ServiceController.toggleShow);
+
 module.exports = router;
