@@ -1,3 +1,3 @@
-exports.userAuthRoutes = require("./user");
-exports.vendorAuthRoutes = require("./vendor");
-exports.adminAuthRoutes = require("./admin");
+exports.userAuthRoutes = require("./user.routes");
+exports.vendorAuthRoutes = require("./vendor.routes");
+exports.adminAuthRoutes = require("./admin.routes");

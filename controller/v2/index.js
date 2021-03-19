@@ -1,1 +1,1 @@
-exports.v2DashboardController = require("./dashboard");
+exports.v2DashboardController = require("./dashboard.controller");

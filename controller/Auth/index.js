@@ -1,3 +1,3 @@
-exports.UserAuthController = require("./User");
-exports.VendorAuthController = require("./Vendor");
-exports.AdminAuthController = require("./Admin");
+exports.UserAuthController = require("./User.controller");
+exports.VendorAuthController = require("./Vendor.controller");
+exports.AdminAuthController = require("./Admin.controller");

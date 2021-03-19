@@ -1,7 +1,7 @@
-exports.v2DashboardRoutes = require("./dashboard");
-exports.v2ServiceRoutes = require("./service");
-exports.v2BookingRoutes = require("./booking");
-exports.v2CategoryRoutes = require("./category");
-exports.v2ReviewRoutes = require("./review");
-exports.v2FeedbackRoutes = require("./feedback");
-exports.v2StaffRoutes = require("./staff");
+exports.v2DashboardRoutes = require("./dashboard.routes");
+exports.v2ServiceRoutes = require("./service.routes");
+exports.v2BookingRoutes = require("./booking.routes");
+exports.v2CategoryRoutes = require("./category.routes");
+exports.v2ReviewRoutes = require("./review.routes");
+exports.v2FeedbackRoutes = require("./feedback.routes");
+exports.v2StaffRoutes = require("./staff.routes");
