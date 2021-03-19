@@ -22,7 +22,14 @@ const reviewSchema = new Schema(
       default: null,
       required: true,
     },
+    staffId: {
+      ref: "Staff",
+      type: Schema.Types.ObjectId,
+      default: null,
+      required: true,
+    },
     star: { type: Number, default: 0 },
+    description: { type: String, default: null, require: false },
     deletedAt: { type: Date, default: null },
   },
   {

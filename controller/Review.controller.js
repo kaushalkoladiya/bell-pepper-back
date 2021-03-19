@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
-const { Review } = require("../model");
+const { Review, Booking } = require("../model");
+const faker = require("faker");
 
 exports.store = async (req, res, next) => {
   try {
@@ -12,11 +13,15 @@ exports.store = async (req, res, next) => {
       throw err;
     }
 
+    const booking = await Booking.findById(req.body.bookingId);
+
     const review = await Review.create({
       bookingId: req.body.bookingId,
+      staffId: booking.staffId,
       serviceId: req.body.serviceId,
       userId: req.body.userId,
       star: req.body.star,
+      description: req.body.description,
     });
 
     return res.status(200).json({
@@ -38,6 +43,41 @@ exports.destroy = async (req, res, next) => {
       status: 200,
       message: "Review deleted item successfully!",
       data: {},
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+exports.faker = async (req, res, next) => {
+  try {
+    const length = req.query.count || 5;
+
+    const bookingsArray = await Booking.find().where({
+      staffId: { $ne: null },
+    });
+
+    const reviewArray = [];
+
+    for (let index = 0; index < length; index++) {
+      const i = Math.floor(Math.random() * bookingsArray.length);
+
+      reviewArray.push({
+        bookingId: bookingsArray[i]._id,
+        staffId: bookingsArray[i].staffId,
+        serviceId: bookingsArray[i].serviceId,
+        userId: bookingsArray[i].userId,
+        star: faker.random.number(5),
+        description: faker.random.words(5),
+      });
+    }
+
+    await Review.insertMany(reviewArray);
+
+    return res.status(200).json({
+      status: 200,
+      message: "Faker done",
+      data: { reviewArray },
     });
   } catch (error) {
     return next(error);

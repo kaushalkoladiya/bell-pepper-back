@@ -1,7 +1,8 @@
 const { validationResult } = require("express-validator");
-const { Staff, Vendor, Booking } = require("../model");
+const { Staff, Vendor, Review } = require("../model");
 const faker = require("faker");
 const { BASE_URL, deleteFile, deleteReqFile } = require("../helper");
+const mongoose = require("mongoose");
 
 exports.index = async (req, res, next) => {
   try {
@@ -241,6 +242,84 @@ exports.faker = async (req, res, next) => {
       status: 200,
       message: "Staff deleted successfully!",
       data: { staffs: staffArray },
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+exports.show = async (req, res, next) => {
+  try {
+    const staffId = req.params.staffId;
+    const _staff = await Staff.findById(staffId);
+    const _review = await Review.find({ staffId }).populate("userId");
+
+    const match = {
+      $match: {
+        staffId: mongoose.Types.ObjectId(staffId),
+        star: {
+          $gt: 0,
+        },
+      },
+    };
+
+    const group = {
+      $group: {
+        _id: {
+          star: "$star",
+        },
+        totalStars: { $sum: "$star" },
+        count: { $sum: 1 },
+      },
+    };
+
+    const data = await Review.aggregate([match, group]);
+
+    let totalStars = 0,
+      totalCounts = 0;
+
+    const stars = data.map((item) => {
+      totalStars += item.totalStars;
+      totalCounts += item.count;
+      return {
+        star: item._id.star,
+        count: item.count,
+        totalStars: item.totalStars,
+      };
+    });
+
+    const reviews = _review.map((item) => ({
+      description: item.description,
+      user: {
+        name: item.userId.name,
+        image: item.userId.image,
+      },
+      createdAt: item.createdAt,
+    }));
+
+    const staff = {
+      name: _staff.name,
+      about: _staff.about,
+      image: _staff.image,
+      gender: _staff.gender,
+      age: _staff.age,
+      nationality: _staff.nationality,
+      idProof: _staff.idProof,
+      deletedAt: _staff.deletedAt,
+      _id: _staff._id,
+      vendorId: _staff.vendorId,
+      createdAt: _staff.createdAt,
+      rating: {
+        stars,
+        average: totalStars / totalCounts,
+        reviews,
+      },
+    };
+
+    return res.status(200).json({
+      status: 200,
+      message: "Staff details",
+      staff,
     });
   } catch (error) {
     return next(error);
