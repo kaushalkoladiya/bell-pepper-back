@@ -11,7 +11,18 @@ const storeValidation = [
   body("addressId").isAlphanumeric().withMessage("Invalid field Address ID"),
 ];
 
+const addressChangeValidation = [
+  body("bookingId").isAlphanumeric().withMessage("Invalid field Service ID"),
+  body("userId").isAlphanumeric().withMessage("Invalid field Service ID"),
+  body("addressId").isAlphanumeric().withMessage("Invalid field Address ID"),
+];
+
 router.post("/booking", storeValidation, BookingController.store);
 router.get("/booking/user/:userId", BookingController.indexByUser);
+router.post(
+  "/booking/changeAddress",
+  addressChangeValidation,
+  BookingController.changeAddress
+);
 
 module.exports = router;

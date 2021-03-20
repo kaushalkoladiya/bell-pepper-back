@@ -3,6 +3,12 @@ const { Service, Booking, Vendor, Staff, User, Address } = require("../model");
 const mongoose = require("mongoose");
 const faker = require("faker");
 
+const isAddressBelongsToUser = async (userId, addressId) =>
+  await Address.exists({
+    userId,
+    _id: addressId,
+  });
+
 exports.index = async (req, res, next) => {
   try {
     let condition = { deletedAt: null };
@@ -64,9 +70,9 @@ exports.indexByUser = async (req, res, next) => {
     const bookings = _bookings.map((item) => {
       let status = "Pending";
       if (item.isDone) status = "Completed";
-      if (item.profession) status = "Assigned";
+      if (item.staffId) status = "Assigned";
       return {
-        serviceName: item.serviceId.title,
+        serviceName: item.serviceId ? item.serviceId.title : null,
         frequency: item.frequency,
         startDate: item.date,
         startTime: item.time,
@@ -75,19 +81,27 @@ exports.indexByUser = async (req, res, next) => {
         isMaterialRequired: item.isMaterialRequired,
         numberOfProfessions: item.howManyProfessions,
         staffDetails: {
-          name: item.profession ? item.profession.name : null,
-          about: item.profession ? item.profession.about : null,
-          email: item.profession ? item.profession.email : null,
-          mobile: item.profession ? item.profession.mobile : null,
-          image: item.profession ? item.profession.image : null,
-          gender: item.profession ? item.profession.gender : null,
-          age: item.profession ? item.profession.age : null,
-          nationality: item.profession ? item.profession.nationality : null,
+          name: item.staffId ? item.staffId.name : null,
+          about: item.staffId ? item.staffId.about : null,
+          email: item.staffId ? item.staffId.email : null,
+          mobile: item.staffId ? item.staffId.mobile : null,
+          image: item.staffId ? item.staffId.image : null,
+          gender: item.staffId ? item.staffId.gender : null,
+          age: item.staffId ? item.staffId.age : null,
+          nationality: item.staffId ? item.staffId.nationality : null,
         },
         isCancelled: item.isCancelled,
         isFinished: item.isDone,
         status,
         createdAt: item.createdAt,
+        address: {
+          city: item.addressId.city ? item.addressId.city : null,
+          houseNumber: item.addressId.houseNumber
+            ? item.addressId.houseNumber
+            : null,
+          zipCode: item.addressId.zipCode ? item.addressId.zipCode : null,
+          state: item.addressId.state ? item.addressId.state : null,
+        },
       };
     });
 
@@ -428,6 +442,46 @@ exports.destroy = async (req, res, next) => {
       status: 200,
       message: "Booking deleted successfully!",
       data: {},
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+exports.changeAddress = async (req, res, next) => {
+  try {
+    const validatedData = validationResult(req);
+    if (!validatedData.isEmpty()) {
+      const err = new Error("Validation Fail");
+      err.status = 422;
+      err.errors = validatedData.errors.map((error) => ({
+        message: error.msg,
+        name: error.param,
+      }));
+      throw err;
+    }
+
+    const reqObj = req.body;
+
+    const userId = reqObj.userId,
+      addressId = reqObj.addressId,
+      bookingId = reqObj.bookingId;
+
+    if (!(await isAddressBelongsToUser(userId, addressId))) {
+      const err = new Error("This address is not belonging to you!");
+      err.status = 422;
+      throw err;
+    }
+
+    const booking = await Booking.findById({ _id: bookingId, userId });
+
+    booking.addressId = addressId;
+    await booking.save();
+
+    return res.status(200).json({
+      status: 200,
+      message: "Address changed successfully!",
+      data: { booking },
     });
   } catch (error) {
     return next(error);
