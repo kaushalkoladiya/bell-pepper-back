@@ -12,3 +12,4 @@ exports.VideoController = require("./Video.controller");
 exports.TutorialController = require("./Tutorial.controller");
 exports.ReviewController = require("./Review.controller");
 exports.FeedbackController = require("./Feedback.controller");
+exports.AddressController = require("./Address.controller");

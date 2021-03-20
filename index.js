@@ -18,6 +18,7 @@ const {
   v2ReviewRoutes,
   v2FeedbackRoutes,
   v2StaffRoutes,
+  v2AddressRoutes,
 } = require("./routes/v2");
 const {
   serviceRoutes,
@@ -34,6 +35,7 @@ const {
   tutorialRoutes,
   reviewRoutes,
   feedbackRoutes,
+  addressRoutes,
 } = require("./routes");
 require("dotenv").config();
 
@@ -80,7 +82,8 @@ app.use(
   v2CategoryRoutes,
   v2ReviewRoutes,
   v2FeedbackRoutes,
-  v2StaffRoutes
+  v2StaffRoutes,
+  v2AddressRoutes
 );
 app.use("/api/v2/vendor", vendorAuthRoutes);
 
@@ -100,6 +103,7 @@ app.use("/api/video", videoRoutes);
 app.use("/api/tutorial", tutorialRoutes);
 app.use("/api/review", reviewRoutes);
 app.use("/api/feedback", feedbackRoutes);
+app.use("/api/address", addressRoutes);
 
 app.use("/api/*", (req, res, next) => {
   res.status(404).json({

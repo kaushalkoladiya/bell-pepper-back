@@ -12,3 +12,4 @@ exports.videoRoutes = require("./video.routes");
 exports.tutorialRoutes = require("./tutorial.routes");
 exports.reviewRoutes = require("./review.routes");
 exports.feedbackRoutes = require("./feedback.routes");
+exports.addressRoutes = require("./address.routes");

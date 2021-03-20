@@ -10,3 +10,4 @@ exports.Tutorial = require("./Tutorial.model");
 exports.Video = require("./Video.model");
 exports.Feedback = require("./Feedback.model");
 exports.Review = require("./Review.model");
+exports.Address = require("./Address.model");

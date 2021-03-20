@@ -55,6 +55,20 @@ const userSchema = new Schema(
       required: true,
       default: null,
     },
+    addresses: [
+      {
+        type: Schema.ObjectId,
+        require: false,
+        ref: "Address",
+      },
+    ],
+    activeAddress: {
+      type: Schema.ObjectId,
+      ref: "Address",
+      require: false,
+      default: null,
+    },
+    deletedAt: { type: Date, default: null },
   },
   {
     timestamps: true,
