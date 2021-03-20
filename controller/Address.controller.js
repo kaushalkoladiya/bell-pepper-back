@@ -1,4 +1,4 @@
-const { Address, User } = require("../model");
+const { Address, User, Vendor } = require("../model");
 const faker = require("faker");
 const mongoose = require("mongoose");
 const { validationResult } = require("express-validator");
@@ -210,6 +210,40 @@ exports.faker = async (req, res, next) => {
       status: 200,
       message: "Faker done",
       data: { bookings: addressArray },
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+exports.markAsActive = async (req, res, next) => {
+  try {
+    const validatedData = validationResult(req);
+
+    if (!validatedData.isEmpty()) {
+      const err = new Error("Validation Fail");
+      err.status = 422;
+      err.errors = validatedData.errors;
+      throw err;
+    }
+
+    let user;
+    if (req.body.userId) {
+      user = await User.findById(req.body.userId);
+    } else if (req.body.vendorId) {
+      user = await Vendor.findById(req.body.vendorId);
+    } else {
+      const err = new Error("This Address not belonging to you!");
+      err.status = 422;
+      throw err;
+    }
+
+    user.activeAddress = req.params.addressId;
+    await user.save();
+    return res.status(200).json({
+      status: 200,
+      message: "Address marked as active one!",
+      data: { user },
     });
   } catch (error) {
     return next(error);

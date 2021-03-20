@@ -32,11 +32,19 @@ const vendorSchema = new Schema(
       unique: true,
       default: null,
     },
-    address: {
-      city: String,
-      street: String,
-      houseNumber: String,
+    activeAddress: {
+      type: Schema.ObjectId,
+      ref: "Address",
+      require: false,
+      default: null,
     },
+    addresses: [
+      {
+        type: Schema.ObjectId,
+        require: false,
+        ref: "Address",
+      },
+    ],
     staff: [
       {
         type: Schema.Types.ObjectId,

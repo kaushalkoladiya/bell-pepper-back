@@ -12,8 +12,7 @@ const storeValidation = [
   body("state").notEmpty().withMessage("Invalid state!"),
 ];
 
-const deleteValidation = [
-  body("userId").isAlphanumeric().withMessage("Invalid userId!"),
+const addressIdValidation = [
   param("addressId").isAlphanumeric().withMessage("Invalid addressId!"),
 ];
 
@@ -21,9 +20,14 @@ router.get("/address/user/:userId", AddressController.indexByUser);
 router.get("/address/vendor/:vendorId", AddressController.indexByVendor);
 router.post("/address", storeValidation, AddressController.store);
 router.patch("/address/:addressId", storeValidation, AddressController.update);
+router.put(
+  "/address/markAsActive/:addressId",
+  addressIdValidation,
+  AddressController.markAsActive
+);
 router.delete(
   "/address/:addressId",
-  deleteValidation,
+  addressIdValidation,
   AddressController.destroy
 );
 
