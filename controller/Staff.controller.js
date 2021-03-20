@@ -63,6 +63,8 @@ exports.indexByCategory = async (req, res, next) => {
         gender,
         age,
         nationality,
+        isAvailable,
+        availabilityTime,
         createdAt: joinedOn,
       }) => ({
         _id,
@@ -74,6 +76,8 @@ exports.indexByCategory = async (req, res, next) => {
         gender,
         age,
         nationality,
+        isAvailable,
+        availabilityTime,
         joinedOn,
       })
     );
@@ -252,6 +256,13 @@ exports.show = async (req, res, next) => {
   try {
     const staffId = req.params.staffId;
     const _staff = await Staff.findById(staffId);
+
+    if (!_staff) {
+      const error = new Error("Staff details not found!");
+      error.status = 404;
+      throw error;
+    }
+
     const _review = await Review.find({ staffId }).populate("userId");
 
     const match = {
@@ -320,6 +331,47 @@ exports.show = async (req, res, next) => {
       status: 200,
       message: "Staff details",
       staff,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+exports.toggleAvailability = async (req, res, next) => {
+  try {
+    const staff = await Staff.findById(req.params.staffId);
+    staff.isAvailable = !staff.isAvailable;
+    await staff.save();
+
+    return res.status(200).json({
+      status: 200,
+      message: "Change availability",
+      data: { staff },
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+exports.changeAvailabilityTime = async (req, res, next) => {
+  try {
+    const staff = await Staff.findById(req.params.staffId);
+
+    const reqObj = req.body;
+
+    const _time = {
+      start: { hour: reqObj.startHour, min: reqObj.startMin },
+      end: { hour: reqObj.endHour, min: reqObj.endMin },
+    };
+
+    staff.availabilityTime = _time;
+
+    await staff.save();
+
+    return res.status(200).json({
+      status: 200,
+      message: "Change availability",
+      data: { staff },
     });
   } catch (error) {
     return next(error);

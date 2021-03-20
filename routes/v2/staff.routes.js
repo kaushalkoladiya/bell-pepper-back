@@ -5,5 +5,13 @@ const router = express.Router();
 
 router.get("/staff/category/:categoryId", StaffController.indexByCategory);
 router.get("/staff/:staffId", StaffController.show);
+router.put(
+  "/staff/change/availability/:staffId",
+  StaffController.toggleAvailability
+);
+router.patch(
+  "/staff/change/availability/time/:staffId",
+  StaffController.changeAvailabilityTime
+);
 
 module.exports = router;
