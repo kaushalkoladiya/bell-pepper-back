@@ -117,11 +117,14 @@ app.get("/*", function (req, res) {
     .sendFile(path.join(__dirname, "public", "build", "index.html"));
 });
 app.use((err, req, res, next) => {
-  console.log(err);
+  const message = err.message || "Server Error",
+    status = err.status || 500;
+
+  console.log(`Status: ${status} \nMessage: ${message}`);
   return res.status(err.status || 500).json({
-    message: err.message || "Server Error",
+    message,
     errors: err.errors,
-    status: err.status || 500,
+    status,
   });
 });
 mongoose.connect(
