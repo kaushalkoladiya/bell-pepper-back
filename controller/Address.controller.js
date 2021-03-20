@@ -108,7 +108,7 @@ exports.update = async (req, res, next) => {
     if (reqObj.userId) filter.userId = reqObj.userId;
     else if (reqObj.vendorId) filter.vendorId = reqObj.vendorId;
     else {
-      const err = new Error("This Address not belonging to you!");
+      const err = new Error("This address is not belonging to you!");
       err.status = 422;
       throw err;
     }
@@ -116,7 +116,7 @@ exports.update = async (req, res, next) => {
     const address = await Address.findOne(filter);
 
     if (!address) {
-      const err = new Error("This Address not belonging to you!");
+      const err = new Error("This address is not belonging to you!");
       err.status = 422;
       throw err;
     }
@@ -155,7 +155,7 @@ exports.destroy = async (req, res, next) => {
     if (req.body.userId) filter.userId = req.body.userId;
     else if (req.body.vendorId) filter.vendorId = req.body.vendorId;
     else {
-      const err = new Error("This Address not belonging to you!");
+      const err = new Error("This address is not belonging to you!");
       err.status = 422;
       throw err;
     }
@@ -165,7 +165,7 @@ exports.destroy = async (req, res, next) => {
     });
 
     if (!address) {
-      const err = new Error("This Address not belonging to you!");
+      const err = new Error("This address is not belonging to you!");
       err.status = 422;
       throw err;
     }
@@ -233,7 +233,7 @@ exports.markAsActive = async (req, res, next) => {
     } else if (req.body.vendorId) {
       user = await Vendor.findById(req.body.vendorId);
     } else {
-      const err = new Error("This Address not belonging to you!");
+      const err = new Error("This address is not belonging to you!");
       err.status = 422;
       throw err;
     }

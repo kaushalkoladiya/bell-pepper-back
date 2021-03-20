@@ -1,5 +1,5 @@
 const { validationResult } = require("express-validator");
-const { Service, Booking, Vendor, Staff, User } = require("../model");
+const { Service, Booking, Vendor, Staff, User, Address } = require("../model");
 const mongoose = require("mongoose");
 const faker = require("faker");
 
@@ -116,10 +116,12 @@ exports.store = async (req, res, next) => {
       throw err;
     }
 
-    const vendorId = req.body.vendorId,
-      serviceId = req.body.serviceId,
-      userId = req.body.userId,
-      staffId = req.body.staffId;
+    const reqObj = req.body;
+
+    const serviceId = reqObj.serviceId,
+      userId = reqObj.userId,
+      addressId = reqObj.addressId,
+      staffId = reqObj.staffId;
 
     const isServiceExist = await Service.findById(serviceId);
     if (!isServiceExist) {
@@ -128,23 +130,41 @@ exports.store = async (req, res, next) => {
       throw err;
     }
 
-    const isUserExist = await User.findById(userId);
-    if (!isUserExist) {
+    const isAddressBelongsToUser = await Address.exists({
+      userId,
+      _id: addressId,
+    });
+
+    if (!isAddressBelongsToUser) {
+      const err = new Error("This address is not belonging to you!");
+      err.status = 422;
+      throw err;
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
       const err = new Error("User not found");
       err.status = 404;
       throw err;
     }
 
+    if (!user.activeAddress && user.addresses.length === 0) {
+      const err = new Error("Please choose one address.");
+      err.status = 422;
+      throw err;
+    }
+
     let bookingData = {
-      serviceId: req.body.serviceId,
-      userId: req.body.userId,
-      description: req.body.description,
-      isMaterialRequired: req.body.isMaterialRequired,
-      frequency: req.body.frequency,
-      howManyHours: req.body.howManyHours,
-      howManyProfessions: req.body.howManyProfessions,
-      date: req.body.date,
-      time: req.body.time,
+      serviceId: reqObj.serviceId,
+      userId: reqObj.userId,
+      addressId: reqObj.addressId,
+      description: reqObj.description,
+      isMaterialRequired: reqObj.isMaterialRequired,
+      frequency: reqObj.frequency,
+      howManyHours: reqObj.howManyHours,
+      howManyProfessions: reqObj.howManyProfessions,
+      date: reqObj.date,
+      time: reqObj.time,
     };
 
     if (staffId) {
@@ -156,7 +176,6 @@ exports.store = async (req, res, next) => {
       }
 
       bookingData.staffId = staff._id;
-      bookingData.profession = staff._id;
       bookingData.vendorId = staff.vendorId;
     }
     // const vendorId = req.body.vendorId,
@@ -224,7 +243,7 @@ exports.assignStaff = async (req, res, next) => {
     //   throw err;
     // }
 
-    booking.profession = mongoose.Types.ObjectId(req.body.staffId);
+    booking.staffId = mongoose.Types.ObjectId(req.body.staffId);
     await booking.save();
 
     staff.isAvailable = false;
@@ -310,7 +329,7 @@ exports.removeStaff = async (req, res, next) => {
       throw err;
     }
 
-    const staff = await Staff.findById(booking.profession);
+    const staff = await Staff.findById(booking.staffId);
     if (!staff) {
       const err = new Error("Staff not found");
       err.status = 404;
@@ -351,8 +370,12 @@ const getFilteredBooking = async (filter = {}) =>
         model: "Service",
       },
       {
-        path: "profession",
+        path: "staffId",
         model: "Staff",
+      },
+      {
+        path: "addressId",
+        model: "Address",
       },
     ]);
 

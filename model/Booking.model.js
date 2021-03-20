@@ -24,6 +24,11 @@ const bookingSchema = new Schema(
       default: null,
       ref: "Staff",
     },
+    addressId: {
+      type: Schema.Types.Object,
+      default: null,
+      ref: "Address",
+    },
     description: {
       type: String,
       required: false,
@@ -58,11 +63,6 @@ const bookingSchema = new Schema(
       type: String,
       default: null,
       required: false,
-    },
-    profession: {
-      type: Schema.Types.Object,
-      default: null,
-      ref: "Staff",
     },
     paymentId: {
       // type: Schema.Types.ObjectId,
