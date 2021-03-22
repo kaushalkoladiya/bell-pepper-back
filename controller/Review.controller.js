@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
-const { Review, Booking } = require("../model");
+const { Review, Booking, Staff, Service } = require("../model");
 const faker = require("faker");
+const mongoose = require("mongoose");
 
 exports.store = async (req, res, next) => {
   try {
@@ -13,16 +14,30 @@ exports.store = async (req, res, next) => {
       throw err;
     }
 
-    const booking = await Booking.findById(req.body.bookingId);
+    const reqObj = req.body;
+    const serviceId = reqObj.serviceId;
+
+    const booking = await Booking.findById(reqObj.bookingId);
 
     const review = await Review.create({
-      bookingId: req.body.bookingId,
+      bookingId: reqObj.bookingId,
       staffId: booking.staffId,
-      serviceId: req.body.serviceId,
-      userId: req.body.userId,
-      star: req.body.star,
-      description: req.body.description,
+      serviceId,
+      userId: reqObj.userId,
+      star: reqObj.star,
+      description: reqObj.description,
     });
+
+    const staffAvgRating = await calculateRating("staffId", booking.staffId);
+    const serviceAvgRating = await calculateRating("serviceId", serviceId);
+
+    const staff = await Staff.findById(booking.staffId);
+    staff.stars = staffAvgRating;
+    await staff.save();
+
+    const service = await Service.findById(serviceId);
+    service.stars = serviceAvgRating;
+    await service.save();
 
     return res.status(200).json({
       status: 200,
@@ -82,4 +97,42 @@ exports.faker = async (req, res, next) => {
   } catch (error) {
     return next(error);
   }
+};
+
+const calculateRating = async (type, id) => {
+  const match = {
+    $match: {
+      [type]: mongoose.Types.ObjectId(id),
+      star: {
+        $gt: 0,
+      },
+    },
+  };
+
+  const group = {
+    $group: {
+      _id: {
+        star: "$star",
+      },
+      totalStars: { $sum: "$star" },
+      count: { $sum: 1 },
+    },
+  };
+
+  const data = await Review.aggregate([match, group]);
+
+  let totalStars = 0,
+    totalCounts = 0;
+
+  data.map((item) => {
+    totalStars += item.totalStars;
+    totalCounts += item.count;
+    return {
+      star: item._id.star,
+      count: item.count,
+      totalStars: item.totalStars,
+    };
+  });
+
+  return totalStars / totalCounts;
 };
