@@ -54,13 +54,13 @@ const bookingSchema = new Schema(
       default: null,
       required: false,
     },
-    date: {
-      type: String,
+    startDate: {
+      type: Date,
       default: null,
       required: false,
     },
-    time: {
-      type: String,
+    endDate: {
+      type: Date,
       default: null,
       required: false,
     },

@@ -19,8 +19,11 @@ const storeValidation = [
   body("howManyProfessions")
     .isNumeric()
     .withMessage("Invalid field HowManyProfessions"),
-  body("date").notEmpty().withMessage("Invalid field Date"),
-  body("time").notEmpty().withMessage("Invalid field Time"),
+  body("year").notEmpty().withMessage("Invalid year"),
+  body("month").notEmpty().withMessage("Invalid month"),
+  body("date").notEmpty().withMessage("Invalid date"),
+  body("hour").notEmpty().withMessage("Invalid hour"),
+  body("minute").notEmpty().withMessage("Invalid minute"),
 ];
 
 const assignStaffValidation = [

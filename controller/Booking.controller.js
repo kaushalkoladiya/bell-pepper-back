@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
 const { Service, Booking, Vendor, Staff, User, Address } = require("../model");
+const StaffJobController = require("./StaffJob.controller");
 const mongoose = require("mongoose");
 const faker = require("faker");
 
@@ -168,6 +169,18 @@ exports.store = async (req, res, next) => {
       throw err;
     }
 
+    const startDate = formatDate(
+      Number(reqObj.year),
+      Number(reqObj.month),
+      Number(reqObj.date),
+      Number(reqObj.hour),
+      Number(reqObj.minutes)
+    );
+
+    const endDate = new Date(startDate).setHours(
+      startDate.getHours() + reqObj.howManyHours
+    );
+
     let bookingData = {
       serviceId: reqObj.serviceId,
       userId: reqObj.userId,
@@ -177,12 +190,14 @@ exports.store = async (req, res, next) => {
       frequency: reqObj.frequency,
       howManyHours: reqObj.howManyHours,
       howManyProfessions: reqObj.howManyProfessions,
-      date: reqObj.date,
-      time: reqObj.time,
+      startDate,
+      endDate,
     };
 
+    let staff = false;
+
     if (staffId) {
-      const staff = await Staff.findById(staffId);
+      staff = await Staff.findById(staffId);
       if (!staff) {
         const err = new Error("Staff not found");
         err.status = 404;
@@ -192,26 +207,18 @@ exports.store = async (req, res, next) => {
       bookingData.staffId = staff._id;
       bookingData.vendorId = staff.vendorId;
     }
-    // const vendorId = req.body.vendorId,
-    //   serviceId = req.body.serviceId;
-
-    // const hasVendor = await Vendor.findById(vendorId);
-    // if (!hasVendor) {
-    //   const err = new Error("Vendor not found");
-    //   err.status = 404;
-    //   throw err;
-    // }
-
-    // const hasService = await Service.exists({ _id: serviceId, vendorId });
-    // if (!hasService) {
-    //   const err = new Error(
-    //     "This Service is not belonging to specified Vendor!"
-    //   );
-    //   err.status = 404;
-    //   throw err;
-    // }
 
     const booking = await Booking.create(bookingData);
+
+    if (staff) {
+      await StaffJobController.store(
+        staff._id,
+        booking._id,
+        startDate,
+        endDate,
+        false
+      );
+    }
 
     return res.status(200).json({
       status: 200,
@@ -250,18 +257,18 @@ exports.assignStaff = async (req, res, next) => {
       throw err;
     }
 
-    // // do this condition to not (if not).
-    // if (!staff.isAvailable) {
-    //   const err = new Error("Staff is not available!");
-    //   err.status = 422;
-    //   throw err;
-    // }
-
     booking.staffId = mongoose.Types.ObjectId(req.body.staffId);
     await booking.save();
 
-    staff.isAvailable = false;
-    await staff.save();
+    if (staff) {
+      await StaffJobController.store(
+        staff._id,
+        booking._id,
+        booking.startDate,
+        booking.endDate,
+        false
+      );
+    }
 
     return res.status(200).json({
       status: 200,
@@ -354,8 +361,9 @@ exports.removeStaff = async (req, res, next) => {
     booking.doneOn = new Date().toISOString();
     await booking.save();
 
-    staff.isAvailable = true;
-    await staff.save();
+    const staffJob = await StaffJob.findOne({ bookingId: booking._id });
+
+    StaffJobController.markAsCompleted(staffJob._id);
 
     return res.status(200).json({
       status: 200,
@@ -486,4 +494,15 @@ exports.changeAddress = async (req, res, next) => {
   } catch (error) {
     return next(error);
   }
+};
+
+const formatDate = (year, month, date, hour, minute) =>
+  new Date(year, month - 1, date, hour, minute, 0);
+
+const addZero = (value) => {
+  let val = "0" + value;
+  if (val.length >= 3) {
+    val = val.substr(1);
+  }
+  return Number(val) - 1;
 };

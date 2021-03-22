@@ -20,6 +20,7 @@ const serviceSchema = new Schema(
       default: true,
       required: true,
     },
+    stars: { type: Number, default: 0 },
     details: [
       {
         name: String,

@@ -13,3 +13,4 @@ exports.TutorialController = require("./Tutorial.controller");
 exports.ReviewController = require("./Review.controller");
 exports.FeedbackController = require("./Feedback.controller");
 exports.AddressController = require("./Address.controller");
+exports.StaffJobController = require("./StaffJob.controller");
