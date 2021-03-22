@@ -387,12 +387,6 @@ exports.availability = async (req, res, next) => {
   try {
     const reqObj = req.body;
     const staffId = req.params.staffId;
-    // const staff = await Staff.findById();
-    // console.log(staff);
-
-    // const match = {
-    //   $match: {  },
-    // };
 
     const staffJobs = await StaffJob.find({
       staffId: mongoose.Types.ObjectId(staffId),
@@ -406,58 +400,48 @@ exports.availability = async (req, res, next) => {
       isCompleted: false,
     });
 
-    // const staffJob = await StaffJob.aggregate([match]);
-
-    var mL = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    var mS = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "June",
-      "July",
-      "Aug",
-      "Sept",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-
-    const hours = getHoursArray();
-    // console.log(hours);
-
-    // const _d = hours.map((hour) => {});
-
-    // const _d = staffJobs.map((job) => {
-    //   const hourIndex = hours.findIndex(
-    //     (item) => Number(item.hour) === Number(job.start.getHours())
-    //   );
-    //   console.log(hourIndex);
-    // });
+    const hoursArray = getHoursArray();
 
     const _d = staffJobs.map((item) => ({
       hour: item.start.getHours(),
-      minute: item.start.getMinutes(),
+      min: item.start.getMinutes(),
+      for: item.end - item.start,
     }));
+
+    const availabilities = hoursArray.map((hour, key) => {
+      if (hour.isDone) {
+        return { ...hour, isDone: undefined, isAvailable: false };
+      }
+      const jobIndex = _d.findIndex(
+        (item) => Number(item.hour) === Number(hour.hour)
+      );
+      const _time = { ...hour };
+
+      if (jobIndex !== -1) {
+        if (
+          Number(_d[jobIndex].hour) === Number(hour.hour) &&
+          Number(_d[jobIndex].min) === Number(hour.min)
+        ) {
+          const hoursDifference = Math.ceil(
+            _d[jobIndex].for / (1000 * 60 * 60)
+          );
+
+          const nextLength = Math.ceil(hoursDifference / 0.5);
+
+          for (let i = 0; i < nextLength; i++)
+            hoursArray[key + i].isDone = true;
+
+          _time.isAvailable = false;
+        } else _time.isAvailable = true;
+      } else _time.isAvailable = true;
+
+      return _time;
+    });
 
     return res.status(200).json({
       status: 200,
       message: "Staff availability",
-      data: { _d },
+      data: { availabilities },
     });
   } catch (error) {
     return next(error);
@@ -467,21 +451,22 @@ exports.availability = async (req, res, next) => {
 const getHoursArray = function () {
   var x = 30; //minutes interval
   var times = []; // time array
-  var tt = new Date().getHours(); // start time
+  var tt = 0; // start time
   var ap = ["AM", "PM"]; // AM-PM
 
   //loop to increment the time and push results in array
-  for (var i = 0; tt < 10 * 60; i++) {
+  for (var i = 0; tt < 24 * 60; i++) {
     var hh = Math.floor(tt / 60); // getting hours of day in 0-24 format
     var mm = tt % 60; // getting minutes of the hour in 0-55 format
     // times[i] =
-    //   ("0" + (hh % 12)).slice(-2) +
-    //   ":" +
-    //   ("0" + mm).slice(-2) +
-    //   ap[Math.floor(hh / 12)]; // pushing data in array in [00:00 - 12:00 AM/PM format]
+    // ("0" + (hh % 12)).slice(-2) +
+    // ":" +
+    // ("0" + mm).slice(-2) +
+    // ap[Math.floor(hh / 12)]; // pushing data in array in [00:00 - 12:00 AM/PM format]
     (times[i] = {
       hour: ("0" + (hh % 24)).slice(-2),
       min: ("0" + mm).slice(-2),
+      timeStr: ("0" + (hh % 24)).slice(-2) + ":" + ("0" + mm).slice(-2),
     }),
       (tt = tt + x);
   }
