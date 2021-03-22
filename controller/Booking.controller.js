@@ -174,8 +174,14 @@ exports.store = async (req, res, next) => {
       Number(reqObj.month),
       Number(reqObj.date),
       Number(reqObj.hour),
-      Number(reqObj.minutes)
+      Number(reqObj.minute)
     );
+
+    if (!startDate.getTime) {
+      const err = new Error("Invalid date");
+      err.status = 422;
+      throw err;
+    }
 
     const endDate = new Date(startDate).setHours(
       startDate.getHours() + reqObj.howManyHours
@@ -496,8 +502,13 @@ exports.changeAddress = async (req, res, next) => {
   }
 };
 
-const formatDate = (year, month, date, hour, minute) =>
-  new Date(year, month - 1, date, hour, minute, 0);
+const formatDate = (
+  year = new Date().getFullYear(),
+  month = new Date().getMonth(),
+  date = 1,
+  hour = 0,
+  minute = 0
+) => new Date(year, month - 1, date, hour, minute, 0);
 
 const addZero = (value) => {
   let val = "0" + value;

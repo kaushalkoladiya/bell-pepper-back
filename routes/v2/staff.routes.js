@@ -3,6 +3,7 @@ const { StaffController } = require("../../controller");
 
 const router = express.Router();
 
+router.post("/staff/availability/:staffId", StaffController.availability);
 router.get("/staff/category/:categoryId", StaffController.indexByCategory);
 router.get("/staff/:staffId", StaffController.show);
 router.put(
