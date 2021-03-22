@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 const { Service, Booking, Vendor, Staff, User, Address } = require("../model");
 const StaffJobController = require("./StaffJob.controller");
+const StaffController = require("./Staff.controller");
 const mongoose = require("mongoose");
 const faker = require("faker");
 
@@ -132,6 +133,23 @@ exports.store = async (req, res, next) => {
     }
 
     const reqObj = req.body;
+
+    const hasStaffAvailable = await StaffController.checkStaffAvailability(
+      formatDate(
+        Number(reqObj.year),
+        Number(reqObj.month),
+        Number(reqObj.date),
+        Number(reqObj.hour),
+        Number(reqObj.minute)
+      ),
+      reqObj.staffId
+    );
+
+    if (!hasStaffAvailable) {
+      const err = new Error("Staff slot not available");
+      err.status = 422;
+      throw err;
+    }
 
     const serviceId = reqObj.serviceId,
       userId = reqObj.userId,
@@ -369,7 +387,7 @@ exports.removeStaff = async (req, res, next) => {
 
     const staffJob = await StaffJob.findOne({ bookingId: booking._id });
 
-    StaffJobController.markAsCompleted(staffJob._id);
+    await StaffJobController.markAsCompleted(staffJob._id);
 
     return res.status(200).json({
       status: 200,

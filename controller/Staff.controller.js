@@ -4,6 +4,32 @@ const faker = require("faker");
 const { BASE_URL, deleteFile, deleteReqFile } = require("../helper");
 const mongoose = require("mongoose");
 
+const getHoursArray = function () {
+  var x = 30; //minutes interval
+  var times = []; // time array
+  var tt = 0; // start time
+  var ap = ["AM", "PM"]; // AM-PM
+
+  //loop to increment the time and push results in array
+  for (var i = 0; tt < 24 * 60; i++) {
+    var hh = Math.floor(tt / 60); // getting hours of day in 0-24 format
+    var mm = tt % 60; // getting minutes of the hour in 0-55 format
+    // times[i] =
+    // ("0" + (hh % 12)).slice(-2) +
+    // ":" +
+    // ("0" + mm).slice(-2) +
+    // ap[Math.floor(hh / 12)]; // pushing data in array in [00:00 - 12:00 AM/PM format]
+    (times[i] = {
+      hour: ("0" + (hh % 24)).slice(-2),
+      min: ("0" + mm).slice(-2),
+      timeStr: ("0" + (hh % 24)).slice(-2) + ":" + ("0" + mm).slice(-2),
+    }),
+      (tt = tt + x);
+  }
+
+  return times;
+};
+
 exports.index = async (req, res, next) => {
   try {
     let condition = { deletedAt: null };
@@ -448,28 +474,13 @@ exports.availability = async (req, res, next) => {
   }
 };
 
-const getHoursArray = function () {
-  var x = 30; //minutes interval
-  var times = []; // time array
-  var tt = 0; // start time
-  var ap = ["AM", "PM"]; // AM-PM
-
-  //loop to increment the time and push results in array
-  for (var i = 0; tt < 24 * 60; i++) {
-    var hh = Math.floor(tt / 60); // getting hours of day in 0-24 format
-    var mm = tt % 60; // getting minutes of the hour in 0-55 format
-    // times[i] =
-    // ("0" + (hh % 12)).slice(-2) +
-    // ":" +
-    // ("0" + mm).slice(-2) +
-    // ap[Math.floor(hh / 12)]; // pushing data in array in [00:00 - 12:00 AM/PM format]
-    (times[i] = {
-      hour: ("0" + (hh % 24)).slice(-2),
-      min: ("0" + mm).slice(-2),
-      timeStr: ("0" + (hh % 24)).slice(-2) + ":" + ("0" + mm).slice(-2),
-    }),
-      (tt = tt + x);
+exports.checkStaffAvailability = async (date, staffId) => {
+  try {
+    const staffJob = await StaffJob.findOne({ staffId, isCompleted: false });
+    if (!staffJob) return true;
+    else if (staffJob.start <= date && staffJob.end > date) return false;
+    else return true;
+  } catch (error) {
+    console.log(error);
   }
-
-  return times;
 };
