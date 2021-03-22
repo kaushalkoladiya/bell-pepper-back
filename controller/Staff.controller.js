@@ -1,5 +1,5 @@
 const { validationResult } = require("express-validator");
-const { Staff, Vendor, Review } = require("../model");
+const { Staff, Vendor, Review, StaffJob } = require("../model");
 const faker = require("faker");
 const { BASE_URL, deleteFile, deleteReqFile } = require("../helper");
 const mongoose = require("mongoose");
@@ -65,7 +65,8 @@ exports.indexByCategory = async (req, res, next) => {
         nationality,
         isAvailable,
         availabilityTime,
-        createdAt: joinedOn,
+        createdAt,
+        stars = 0,
       }) => ({
         _id,
         name,
@@ -78,7 +79,8 @@ exports.indexByCategory = async (req, res, next) => {
         nationality,
         isAvailable,
         availabilityTime,
-        joinedOn,
+        createdAt,
+        stars,
       })
     );
 
@@ -372,6 +374,35 @@ exports.changeAvailabilityTime = async (req, res, next) => {
       status: 200,
       message: "Change availability",
       data: { staff },
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+exports.availability = async (req, res, next) => {
+  try {
+    const staffId = req.params.staffId;
+    const staff = await Staff.findById();
+    console.log(staff);
+
+    // const match = {
+    //   $match: {  },
+    // };
+
+    const staffJobs = await StaffJob.find({
+      staffId: mongoose.Types.ObjectId(staffId),
+      start: { $gt: new Date() },
+    });
+
+    // const staffJob = await StaffJob.aggregate([match]);
+
+    console.log(staffJobs);
+
+    return res.status(200).json({
+      status: 200,
+      message: "Staff availability",
+      data: { staffJobs },
     });
   } catch (error) {
     return next(error);
