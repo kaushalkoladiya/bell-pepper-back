@@ -134,23 +134,6 @@ exports.store = async (req, res, next) => {
 
     const reqObj = req.body;
 
-    const hasStaffAvailable = await StaffController.checkStaffAvailability(
-      formatDate(
-        Number(reqObj.year),
-        Number(reqObj.month),
-        Number(reqObj.date),
-        Number(reqObj.hour),
-        Number(reqObj.minute)
-      ),
-      reqObj.staffId
-    );
-
-    if (!hasStaffAvailable) {
-      const err = new Error("Staff slot not available");
-      err.status = 422;
-      throw err;
-    }
-
     const serviceId = reqObj.serviceId,
       userId = reqObj.userId,
       addressId = reqObj.addressId,
@@ -228,6 +211,17 @@ exports.store = async (req, res, next) => {
         throw err;
       }
 
+      const hasStaffAvailable = await StaffController.checkStaffAvailability(
+        startDate,
+        reqObj.staffId
+      );
+
+      if (!hasStaffAvailable) {
+        const err = new Error("Staff slot not available");
+        err.status = 422;
+        throw err;
+      }
+
       bookingData.staffId = staff._id;
       bookingData.vendorId = staff.vendorId;
     }
@@ -278,6 +272,23 @@ exports.assignStaff = async (req, res, next) => {
     if (!staff) {
       const err = new Error("Staff not found");
       err.status = 404;
+      throw err;
+    }
+
+    const hasStaffAvailable = await StaffController.checkStaffAvailability(
+      formatDate(
+        Number(booking.startDate.getFullYear),
+        Number(booking.startDate.getMonth()),
+        Number(booking.startDate.getDate()),
+        Number(booking.startDate.getHours()),
+        Number(booking.startDate.getMinutes())
+      ),
+      req.body.staffId
+    );
+
+    if (!hasStaffAvailable) {
+      const err = new Error("Staff slot not available");
+      err.status = 422;
       throw err;
     }
 
