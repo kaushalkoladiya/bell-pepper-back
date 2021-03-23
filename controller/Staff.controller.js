@@ -334,21 +334,23 @@ exports.show = async (req, res, next) => {
       totalStars += item.totalStars;
       totalCounts += item.count;
 
+      const _avg = Math.floor((item.count * 100) / totalReviews);
+
       switch (item._id.star) {
         case 1:
-          starPrefix.terrible = (item.count * 100) / totalReviews;
+          starPrefix.terrible = _avg;
           break;
         case 2:
-          starPrefix.bad = (item.count * 100) / totalReviews;
+          starPrefix.bad = _avg;
           break;
         case 3:
-          starPrefix.average = (item.count * 100) / totalReviews;
+          starPrefix.average = _avg;
           break;
         case 4:
-          starPrefix.good = (item.count * 100) / totalReviews;
+          starPrefix.good = _avg;
           break;
         case 5:
-          starPrefix.excellent = (item.count * 100) / totalReviews;
+          starPrefix.excellent = _avg;
           break;
 
         default:
