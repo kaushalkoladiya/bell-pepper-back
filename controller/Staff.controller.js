@@ -317,16 +317,49 @@ exports.show = async (req, res, next) => {
 
     const data = await Review.aggregate([match, group]);
 
+    const totalReviews = (await Review.find({ staffId })).length;
+
     let totalStars = 0,
       totalCounts = 0;
+
+    const starPrefix = {
+      terrible: 0,
+      bad: 0,
+      average: 0,
+      good: 0,
+      excellent: 0,
+    };
 
     const stars = data.map((item) => {
       totalStars += item.totalStars;
       totalCounts += item.count;
+
+      switch (item._id.star) {
+        case 1:
+          starPrefix.terrible = (item.count * 100) / totalReviews;
+          break;
+        case 2:
+          starPrefix.bad = (item.count * 100) / totalReviews;
+          break;
+        case 3:
+          starPrefix.average = (item.count * 100) / totalReviews;
+          break;
+        case 4:
+          starPrefix.good = (item.count * 100) / totalReviews;
+          break;
+        case 5:
+          starPrefix.excellent = (item.count * 100) / totalReviews;
+          break;
+
+        default:
+          break;
+      }
+
       return {
         star: item._id.star,
         count: item.count,
         totalStars: item.totalStars,
+        avg: (item.count * 100) / totalReviews,
       };
     });
 
@@ -352,7 +385,7 @@ exports.show = async (req, res, next) => {
       vendorId: _staff.vendorId,
       createdAt: _staff.createdAt,
       rating: {
-        stars,
+        stars: starPrefix,
         average: totalStars / totalCounts,
         reviews,
       },
@@ -361,7 +394,7 @@ exports.show = async (req, res, next) => {
     return res.status(200).json({
       status: 200,
       message: "Staff details",
-      staff,
+      data: { staff },
     });
   } catch (error) {
     return next(error);
