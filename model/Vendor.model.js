@@ -10,6 +10,12 @@ const vendorSchema = new Schema(
       required: true,
       default: null,
     },
+    addressId: {
+      type: mongoose.Schema.ObjectId,
+      ref: "Address",
+      required: true,
+      default: null,
+    },
     companyName: {
       type: String,
       required: true,
@@ -32,19 +38,6 @@ const vendorSchema = new Schema(
       unique: true,
       default: null,
     },
-    activeAddress: {
-      type: Schema.ObjectId,
-      ref: "Address",
-      require: false,
-      default: null,
-    },
-    addresses: [
-      {
-        type: Schema.ObjectId,
-        require: false,
-        ref: "Address",
-      },
-    ],
     staff: [
       {
         type: Schema.Types.ObjectId,

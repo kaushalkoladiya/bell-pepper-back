@@ -1,10 +1,19 @@
-const { Booking, Vendor, Staff, Category } = require("../model");
+const { Vendor, Category } = require("../model");
 const faker = require("faker");
 
 exports.index = async (req, res, ext) => {
   try {
     const vendors = await Vendor.find({ deletedAt: null })
-      .populate("categoryId")
+      .populate([
+        {
+          path: "categoryId",
+          model: "Category",
+        },
+        {
+          path: "addressId",
+          model: "Address",
+        },
+      ])
       .sort({
         createdAt: -1,
       });
