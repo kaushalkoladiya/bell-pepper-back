@@ -8,7 +8,7 @@ exports.index = async (req, res, next) => {
   try {
     const services = await Service.find({ deletedAt: null })
       .populate("categoryId")
-      .sort({ createdAt: -1 });
+      .sort({ updatedAt: -1 });
 
     // console.log(services);
 

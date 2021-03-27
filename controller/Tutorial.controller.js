@@ -5,15 +5,13 @@ const { Tutorial } = require("../model");
 exports.index = async (req, res, next) => {
   try {
     const tutorials = await Tutorial.find({ deletedAt: null }).sort({
-      createdAt: -1,
+      updatedAt: -1,
     });
-    return res
-      .status(200)
-      .json({
-        status: 200,
-        message: "Get all tutorials successfully!",
-        data: { tutorials },
-      });
+    return res.status(200).json({
+      status: 200,
+      message: "Get all tutorials successfully!",
+      data: { tutorials },
+    });
   } catch (error) {
     return next(error);
   }
@@ -99,13 +97,11 @@ exports.destroy = async (req, res, next) => {
       deletedAt: new Date().toISOString(),
     });
     deleteFile(tutorial.image);
-    return res
-      .status(200)
-      .json({
-        status: 200,
-        message: "Tutorial deleted successfully!",
-        data: {},
-      });
+    return res.status(200).json({
+      status: 200,
+      message: "Tutorial deleted successfully!",
+      data: {},
+    });
   } catch (error) {
     return next(error);
   }

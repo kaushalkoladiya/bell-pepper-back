@@ -13,7 +13,31 @@ const isAddressBelongsToUser = async (userId, addressId) =>
 
 exports.index = async (req, res, next) => {
   try {
-    let condition = { deletedAt: null };
+    let condition = {
+      deletedAt: null,
+      serviceId: { $ne: mongoose.Types.ObjectId("6049dce343403255a5eaeee8") },
+    };
+    if (req.userType !== "ROOT_USER") condition.vendorId = req.userId;
+    const bookings = await getFilteredBooking(condition);
+
+    return res.status(200).json({
+      status: 200,
+      message: "Get all bookings successfully!",
+      data: {
+        bookings,
+      },
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+exports.indexForCleaning = async (req, res, next) => {
+  try {
+    let condition = {
+      deletedAt: null,
+      serviceId: mongoose.Types.ObjectId("6049dce343403255a5eaeee8"),
+    };
     if (req.userType !== "ROOT_USER") condition.vendorId = req.userId;
     const bookings = await getFilteredBooking(condition);
 
@@ -538,11 +562,3 @@ const formatDate = (
   hour = 0,
   minute = 0
 ) => new Date(year, month - 1, date, hour, minute, 0);
-
-const addZero = (value) => {
-  let val = "0" + value;
-  if (val.length >= 3) {
-    val = val.substr(1);
-  }
-  return Number(val) - 1;
-};

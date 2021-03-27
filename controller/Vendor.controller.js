@@ -15,7 +15,7 @@ exports.index = async (req, res, ext) => {
         },
       ])
       .sort({
-        createdAt: -1,
+        updatedAt: -1,
       });
     return res.status(200).json({
       status: 200,

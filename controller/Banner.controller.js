@@ -4,7 +4,7 @@ const { Banner } = require("../model");
 exports.index = async (req, res, next) => {
   try {
     const banners = await Banner.find({ deletedAt: null }).sort({
-      createdAt: -1,
+      updatedAt: -1,
     });
     return res.status(200).json({
       status: 200,
@@ -27,13 +27,11 @@ exports.store = async (req, res, next) => {
     }
     const banner = await Banner.create({ image: BASE_URL + req.file.path });
 
-    return res
-      .status(200)
-      .json({
-        status: 200,
-        message: "Banner created successfully!",
-        data: { banner },
-      });
+    return res.status(200).json({
+      status: 200,
+      message: "Banner created successfully!",
+      data: { banner },
+    });
   } catch (error) {
     console.log(error);
     deleteReqFile(req);

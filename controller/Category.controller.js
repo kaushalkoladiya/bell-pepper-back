@@ -6,7 +6,7 @@ const { Category } = require("../model");
 exports.index = async (req, res, next) => {
   try {
     const categories = await Category.find({ deletedAt: null }).sort({
-      createdAt: -1,
+      updatedAt: -1,
     });
     return res.status(200).json({
       status: 200,

@@ -37,6 +37,7 @@ const assignVendorValidation = [
 ];
 
 router.get("/", AdminMiddleware, BookingController.index);
+router.get("/cleaning", AdminMiddleware, BookingController.indexForCleaning);
 router.get("/vendor/:vendorId", BookingController.indexByVendor);
 router.get("/service/:serviceId", BookingController.indexByService);
 router.get("/user/:userId", BookingController.indexByUser);

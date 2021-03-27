@@ -6,15 +6,13 @@ const { Video } = require("../model");
 exports.index = async (req, res, next) => {
   try {
     const videos = await Video.find({ deletedAt: null }).sort({
-      createdAt: -1,
+      updatedAt: -1,
     });
-    return res
-      .status(200)
-      .json({
-        status: 200,
-        message: "Get all videos successfully!",
-        data: { videos },
-      });
+    return res.status(200).json({
+      status: 200,
+      message: "Get all videos successfully!",
+      data: { videos },
+    });
   } catch (error) {
     return next(error);
   }

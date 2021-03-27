@@ -36,7 +36,7 @@ exports.index = async (req, res, next) => {
     if (req.userType !== "ROOT_USER") condition.vendorId = req.userId;
     const staffs = await Staff.find(condition)
       .populate("vendorId")
-      .sort({ createdAt: -1 });
+      .sort({ updatedAt: -1 });
 
     return res.status(200).json({
       status: 200,
