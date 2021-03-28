@@ -65,24 +65,4 @@ app.use("/api/*", (req, res, next) => {
   });
 });
 
-app.get("/*", function (req, res) {
-  res
-    .status(200)
-    .sendFile(path.join(__dirname, "public", "build", "index.html"));
-});
-
-app.use((err, req, res, next) => {
-  const message = err.message || "Server Error",
-    status = err.status || 500;
-
-  // console.log(req);
-  console.log(`Status: ${status} \nMessage: ${message}`);
-  console.log(`URL: ${req.url} METHOD: ${req.method}`);
-  return res.status(err.status || 500).json({
-    message,
-    errors: err.errors,
-    status,
-  });
-});
-
 module.exports = app;
