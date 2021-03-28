@@ -38,14 +38,14 @@ app.use(bodyParser.json());
 
 // routing
 console.log("Loading V2 Auth API routes...");
-glob.sync("./**/*.auth.routes.js").forEach((routePath) => {
+glob.sync("./app/**/*.auth.routes.js").forEach((routePath) => {
   const routes = require(path.resolve(routePath));
   console.log(chalk.grey(" - %s"), routePath.replace("./app/", ""));
   app.use(`/api/v2/`, routes);
 });
 
 console.log("Loading V2 API routes...");
-glob.sync("./**/*.v2.routes.js").forEach((routePath) => {
+glob.sync("./app/**/*.v2.routes.js").forEach((routePath) => {
   const name = routePath.split("/")[2];
   const routes = require(path.resolve(routePath));
   console.log(chalk.grey(" - %s"), routePath.replace("./app/", ""));
@@ -53,7 +53,7 @@ glob.sync("./**/*.v2.routes.js").forEach((routePath) => {
 });
 
 console.log("Loading V1 API routes...");
-glob.sync("./**/*.routes.js").forEach((routePath) => {
+glob.sync("./app/**/*.routes.js").forEach((routePath) => {
   const names = routePath.split("/");
   const fileName = names[names.length - 1];
 
@@ -69,6 +69,26 @@ app.use("/api/*", (req, res, next) => {
   res.status(404).json({
     status: 404,
     message: "404 not found!",
+  });
+});
+
+app.get("/*", function (req, res) {
+  res
+    .status(200)
+    .sendFile(path.join(__dirname, "public", "build", "index.html"));
+});
+
+app.use((err, req, res, next) => {
+  const message = err.message || "Server Error",
+    status = err.status || 500;
+
+  // console.log(req);
+  console.log(`Status: ${status} \nMessage: ${message}`);
+  console.log(`URL: ${req.url} METHOD: ${req.method}`);
+  return res.status(err.status || 500).json({
+    message,
+    errors: err.errors,
+    status,
   });
 });
 
