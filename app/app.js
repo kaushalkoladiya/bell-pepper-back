@@ -37,6 +37,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // routing
+console.log("Loading V2 Auth API routes...");
+glob.sync("./**/*.auth.routes.js").forEach((routePath) => {
+  const routes = require(path.resolve(routePath));
+  console.log(chalk.grey(" - %s"), routePath.replace("./app/", ""));
+  app.use(`/api/v2/`, routes);
+});
+
 console.log("Loading V2 API routes...");
 glob.sync("./**/*.v2.routes.js").forEach((routePath) => {
   const name = routePath.split("/")[2];
@@ -54,7 +61,7 @@ glob.sync("./**/*.routes.js").forEach((routePath) => {
     const name = names[2];
     const routes = require(path.resolve(routePath));
     console.log(chalk.grey(" - %s"), routePath.replace("./app/", ""));
-    app.use(`/api/${name}`, routes);
+    app.use(`/api/v1/${name}`, routes);
   }
 });
 

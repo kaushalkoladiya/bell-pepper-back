@@ -5,6 +5,6 @@ const DashboardController = require("./dashboard.controller");
 
 const router = express.Router();
 
-router.get("/dashboard", AdminMiddleware, DashboardController.counts);
+router.get("/", AdminMiddleware, DashboardController.counts);
 
 module.exports = router;
