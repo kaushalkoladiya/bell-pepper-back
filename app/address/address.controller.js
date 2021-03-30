@@ -75,7 +75,7 @@ exports.store = async (req, res, next) => {
       userId: reqObj.userId,
       vendorId: reqObj.vendorId,
       city: reqObj.city,
-      street: reqObj.streetName,
+      street: reqObj.street,
       houseNumber: reqObj.houseNumber,
       zipCode: reqObj.zipCode,
       state: reqObj.state,
@@ -276,3 +276,14 @@ const removeFromUser = async (userId, addressId) => {
     console.log(error);
   }
 };
+
+const mapAddresses = (addressArray = []) =>
+  addressArray.map((address) => ({
+    _id: address._id,
+    city: address.city ? address.city : null,
+    street: address.street ? address.street : null,
+    houseNumber: address.houseNumber ? address.houseNumber : null,
+    zipCode: address.zipCode ? address.zipCode : null,
+    state: address.state ? address.state : null,
+    createdAt: address.createdAt,
+  }));
