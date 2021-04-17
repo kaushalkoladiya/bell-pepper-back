@@ -100,7 +100,7 @@ exports.indexByCategory = async (req, res, next) => {
         isAvailable,
         availabilityTime,
         createdAt,
-        stars = 0,
+        stars = 0.0,
       }) => ({
         _id,
         name,
